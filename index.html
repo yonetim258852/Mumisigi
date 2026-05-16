@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mum Işığı Atölyesi — El yapımı, küçük üretim mum atölyesi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #faf6ee;
+    --cream-deep: #ede5d4;
+    --gold: #b8945a;
+    --gold-bright: #c8a866;
+    --gold-glow: #e8a447;
+    --sage: #9eab8a;
+    --dark: #3d2f22;
+    --mid: #6b5847;
+    --soft: #8a7a68;
+  }
+
+  body {
+    background: var(--cream);
+    font-family: 'Inter', sans-serif;
+    color: var(--dark);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ============ SPLASH INTRO SCREEN ============ */
+  body.splash-active { overflow: hidden; }
+  body.splash-active .hero { opacity: 0; }
+
+  .splash {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+    transition: opacity 1.2s ease, visibility 1.2s ease;
+  }
+  .splash.fade-out {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* Subtle background spark */
+  .splash::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 300px; height: 300px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(232, 164, 71, 0.15) 0%, transparent 60%);
+    animation: splashGlow 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes splashGlow {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+  }
+
+  /* Logo as centerpiece */
+  .splash-logo {
+    width: 320px;
+    height: 320px;
+    margin-bottom: 30px;
+    opacity: 0;
+    animation: splashLogoIn 2s ease 0.3s forwards;
+    filter: drop-shadow(0 0 40px rgba(232, 164, 71, 0.3));
+    position: relative;
+    z-index: 2;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  @keyframes splashLogoIn {
+    0% { opacity: 0; transform: scale(0.92); filter: drop-shadow(0 0 0 rgba(232, 164, 71, 0)); }
+    60% { opacity: 1; transform: scale(1.02); filter: drop-shadow(0 0 60px rgba(232, 164, 71, 0.5)); }
+    100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 40px rgba(232, 164, 71, 0.3)); }
+  }
+  /* Subtle floating animation after entry */
+  @keyframes splashLogoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .splash-logo.entered {
+    animation: splashLogoFloat 4s ease-in-out infinite;
+  }
+  /* Flicker keyframe used by video placeholder */
+  @keyframes splashFlicker {
+    0%, 100% { transform: scale(1) rotate(0); }
+    25% { transform: scale(1.05, 0.95) rotate(-1deg); }
+    50% { transform: scale(0.97, 1.05) rotate(1deg); }
+    75% { transform: scale(1.03, 0.98) rotate(-0.5deg); }
+  }
+
+  /* Splash title — "Bir mum hikayesi..." */
+  .splash-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    color: #e8a447;
+    font-size: 22px;
+    letter-spacing: 4px;
+    margin-bottom: 30px;
+    opacity: 0;
+    animation: splashTitleIn 1.5s ease 1.5s forwards;
+    position: relative;
+    z-index: 2;
+    text-transform: lowercase;
+  }
+  @keyframes splashTitleIn {
+    from { opacity: 0; transform: translateY(15px); letter-spacing: 8px; }
+    to { opacity: 1; transform: translateY(0); letter-spacing: 4px; }
+  }
+
+  /* The quote */
+  .splash-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    color: #faf6ee;
+    font-size: 42px;
+    line-height: 1.3;
+    max-width: 800px;
+    margin-bottom: 50px;
+    letter-spacing: -0.5px;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: splashQuoteIn 1.5s ease 2.5s forwards;
+  }
+  .splash-quote em {
+    color: #e8a447;
+    font-style: italic;
+  }
+  @keyframes splashQuoteIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Buttons */
+  .splash-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: splashButtonsIn 1.2s ease 4s forwards;
+    position: relative;
+    z-index: 2;
+  }
+  @keyframes splashButtonsIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .splash-btn {
+    padding: 16px 32px;
+    border-radius: 999px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid;
+  }
+  .splash-btn-primary {
+    background: transparent;
+    color: #faf6ee;
+    border-color: rgba(250, 246, 238, 0.4);
+  }
+  .splash-btn-primary:hover {
+    border-color: #e8a447;
+    color: #e8a447;
+    transform: translateY(-2px);
+  }
+  .splash-btn-secondary {
+    background: #faf6ee;
+    color: #000;
+    border-color: #faf6ee;
+  }
+  .splash-btn-secondary:hover {
+    background: #e8a447;
+    border-color: #e8a447;
+    color: #000;
+    transform: translateY(-2px);
+  }
+
+  /* Skip note */
+  .splash-skip {
+    position: absolute;
+    bottom: 30px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(250, 246, 238, 0.3);
+    opacity: 0;
+    animation: splashSkipIn 1s ease 5s forwards;
+    z-index: 2;
+  }
+  @keyframes splashSkipIn { to { opacity: 1; } }
+
+  /* Video modal */
+  .video-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .video-modal.show {
+    display: flex;
+    opacity: 1;
+  }
+  .video-modal-inner {
+    position: relative;
+    width: 100%;
+    max-width: 960px;
+    aspect-ratio: 16/9;
+    background: #111;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .video-modal video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .video-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #faf6ee;
+    text-align: center;
+    padding: 40px;
+    background: radial-gradient(circle at center, #2a1f17 0%, #000 70%);
+  }
+  .video-placeholder-flame {
+    width: 60px; height: 90px;
+    margin-bottom: 24px;
+    animation: splashFlicker 2.5s ease-in-out infinite;
+  }
+  .video-placeholder-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: #faf6ee;
+    margin-bottom: 12px;
+    max-width: 480px;
+    line-height: 1.3;
+  }
+  .video-placeholder-sub {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #e8a447;
+  }
+  .video-close {
+    position: absolute;
+    top: -50px; right: 0;
+    background: transparent;
+    border: 1px solid rgba(250, 246, 238, 0.4);
+    color: #faf6ee;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s;
+  }
+  .video-close:hover {
+    border-color: #e8a447;
+    color: #e8a447;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .splash-logo { width: 220px; height: 220px; margin-bottom: 20px; }
+    .splash-title { font-size: 16px; letter-spacing: 3px; margin-bottom: 30px; }
+    .splash-quote { font-size: 28px; margin-bottom: 40px; }
+    .splash-buttons { flex-direction: column; width: 100%; max-width: 280px; }
+    .splash-btn { width: 100%; justify-content: center; }
+    .video-modal { padding: 20px; }
+    .video-close { top: -45px; }
+  }
+
+  /* Custom cursor */
+  .cursor-flame {
+    position: fixed;
+    width: 20px; height: 20px;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+  @media (hover: hover) {
+    .cursor-flame { opacity: 1; }
+    body { cursor: none; }
+    a, button, .clickable { cursor: none; }
+  }
+
+  /* Floating ambient particles */
+  .ambient {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .ambient-dot {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: var(--gold-glow);
+    border-radius: 50%;
+    opacity: 0;
+    box-shadow: 0 0 6px var(--gold-glow);
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    padding: 20px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 100;
+    background: rgba(250, 246, 238, 0);
+    backdrop-filter: blur(0px);
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, padding 0.4s ease;
+  }
+  nav.scrolled {
+    background: rgba(250, 246, 238, 0.9);
+    backdrop-filter: blur(12px);
+    padding: 14px 40px;
+    border-bottom: 1px solid rgba(184, 148, 90, 0.15);
+  }
+  .nav-brand {
+    font-family: 'Allura', cursive;
+    font-size: 28px;
+    color: var(--gold);
+  }
+  .nav-links {
+    display: flex; gap: 32px;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+  .nav-links a { text-decoration: none; color: inherit; }
+  .nav-links span { transition: color 0.3s; }
+  .nav-links a:hover span { color: var(--gold); }
+
+  /* ============ HERO ============ */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 100px 40px 40px;
+    position: relative;
+    text-align: center;
+  }
+
+  /* Animated logo container */
+  .hero-logo {
+    width: 220px; height: 220px;
+    margin-bottom: 30px;
+    position: relative;
+  }
+  .hero-logo svg { width: 100%; height: 100%; }
+
+  /* Logo elements animation states */
+  .l-jar, .l-leaf-l, .l-leaf-r, .l-flower {
+    opacity: 0;
+    transform-origin: center bottom;
+  }
+  .l-flame { opacity: 0; transform-origin: center bottom; transform: scale(0); }
+  .l-script { opacity: 0; }
+  .l-atolyesi { opacity: 0; }
+  .l-deco { opacity: 0; }
+
+  .animate-in .l-jar {
+    animation: fadeUp 1s cubic-bezier(0.34, 1.4, 0.64, 1) 0.2s forwards;
+  }
+  .animate-in .l-flame {
+    animation: ignite 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1s forwards,
+               flicker 2.5s ease-in-out 1.8s infinite;
+  }
+  .animate-in .l-leaf-l {
+    animation: bloomLeft 0.8s cubic-bezier(0.34, 1.4, 0.64, 1) 1.2s forwards;
+  }
+  .animate-in .l-leaf-r {
+    animation: bloomRight 0.8s cubic-bezier(0.34, 1.4, 0.64, 1) 1.4s forwards;
+  }
+  .animate-in .l-flower {
+    animation: bloom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.6s forwards;
+  }
+  .animate-in .l-deco {
+    animation: fadeIn 0.6s ease 1.8s forwards;
+  }
+  .animate-in .l-script {
+    animation: writeText 1.2s cubic-bezier(0.65, 0, 0.35, 1) 2s forwards;
+  }
+  .animate-in .l-atolyesi {
+    animation: fadeUp 0.6s ease 3s forwards;
+  }
+
+  @keyframes fadeIn { to { opacity: 1; } }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes ignite {
+    0% { opacity: 0; transform: scale(0); }
+    60% { opacity: 1; transform: scale(1.3); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes flicker {
+    0%, 100% { transform: scale(1) rotate(0); }
+    25% { transform: scale(1.05, 0.95) rotate(-1deg); }
+    50% { transform: scale(0.97, 1.05) rotate(1deg); }
+    75% { transform: scale(1.03, 0.98) rotate(-0.5deg); }
+  }
+  @keyframes bloomLeft {
+    from { opacity: 0; transform: scale(0) rotate(-20deg); }
+    to { opacity: 1; transform: scale(1) rotate(0); }
+  }
+  @keyframes bloomRight {
+    from { opacity: 0; transform: scale(0) rotate(20deg); }
+    to { opacity: 1; transform: scale(1) rotate(0); }
+  }
+  @keyframes bloom {
+    from { opacity: 0; transform: scale(0); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes writeText {
+    from { opacity: 1; clip-path: inset(0 100% 0 0); }
+    to { opacity: 1; clip-path: inset(0 0 0 0); }
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 3.4s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 64px;
+    line-height: 1.05;
+    color: var(--dark);
+    font-weight: 300;
+    margin-bottom: 24px;
+    letter-spacing: -1px;
+    max-width: 800px;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-title .word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .animate-in .hero-title .word {
+    animation: fadeUp 0.6s ease forwards;
+  }
+  .animate-in .hero-title .word:nth-child(1) { animation-delay: 3.6s; }
+  .animate-in .hero-title .word:nth-child(2) { animation-delay: 3.75s; }
+  .animate-in .hero-title .word:nth-child(3) { animation-delay: 3.9s; }
+  .animate-in .hero-title .word:nth-child(4) { animation-delay: 4.05s; }
+  .animate-in .hero-title .word:nth-child(5) { animation-delay: 4.2s; }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--soft);
+    line-height: 1.9;
+    max-width: 440px;
+    margin: 0 auto 40px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 4.5s forwards;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    background: var(--dark);
+    color: var(--cream);
+    padding: 16px 36px;
+    border-radius: 999px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 4.8s forwards;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-cta:hover { background: var(--gold); transform: translateY(-2px); }
+  .hero-cta::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, var(--gold-glow), transparent);
+    transition: left 0.6s ease;
+  }
+  .hero-cta:hover::after { left: 100%; }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 1s ease 5.2s forwards, scrollBounce 2s ease-in-out 6s infinite;
+  }
+  @keyframes scrollBounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ============ ATMOSPHERIC HERO IMAGE ============ */
+  .atmospheric {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    min-height: 500px;
+    max-height: 700px;
+    overflow: hidden;
+    margin: 0;
+  }
+  .atmospheric-img {
+    position: absolute;
+    inset: 0;
+    background-image: url('yanan-mumlar-banner.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 8s ease;
+  }
+  .atmospheric:hover .atmospheric-img {
+    transform: scale(1.05);
+  }
+  .atmospheric-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%);
+  }
+  .atmospheric-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    line-height: 1.4;
+    color: #faf6ee;
+    text-align: center;
+    max-width: 800px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    letter-spacing: -0.3px;
+  }
+  .atmospheric-quote em {
+    font-style: italic;
+    font-weight: 300;
+  }
+  @media (max-width: 768px) {
+    .atmospheric { height: 60vh; min-height: 400px; }
+    .atmospheric-quote { font-size: 22px; }
+  }
+
+  /* ============ EDITORIAL BANNER ============ */
+  .banner {
+    padding: 140px 40px;
+    text-align: center;
+    border-top: 1px solid rgba(184, 148, 90, 0.15);
+    border-bottom: 1px solid rgba(184, 148, 90, 0.15);
+  }
+  .banner-eyebrow {
+    font-size: 11px;
+    color: var(--sage);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .banner-h {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 120px;
+    line-height: 0.95;
+    color: var(--dark);
+    font-weight: 300;
+    letter-spacing: -3px;
+  }
+  .banner-h em {
+    color: var(--gold);
+    font-style: italic;
+    display: block;
+  }
+
+  /* ============ COLLECTION ============ */
+  .collection {
+    padding: 120px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .col-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 60px;
+  }
+  .col-eyebrow {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+  .col-link {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--dark);
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 4px;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .col-link:hover { color: var(--gold); padding-bottom: 8px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+
+  /* CARD with hover-to-light effect */
+  .card {
+    cursor: pointer;
+    text-align: left;
+    position: relative;
+  }
+  .card-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+  }
+  .card-img {
+    aspect-ratio: 3/4;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.6s ease;
+    background-color: #ede5d4;
+  }
+  .card-img-1 { background: linear-gradient(135deg, #ede5d4, #d8c9af); }
+  .card-img-2 { background: linear-gradient(135deg, #d8c9af, #c4b08a); }
+  .card-img-3 { background: linear-gradient(135deg, #c4b08a, #a8946d); }
+
+  /* Mini candle inside card */
+  .mini-candle {
+    position: absolute;
+    bottom: 15%; left: 50%;
+    transform: translateX(-50%);
+    width: 35%;
+  }
+  .mini-flame {
+    transform-origin: center bottom;
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+  }
+  .mini-glow {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  .card:hover .mini-flame {
+    transform: scale(1);
+    opacity: 1;
+    animation: flicker 2s ease-in-out 0.4s infinite;
+  }
+  .card:hover .mini-glow {
+    opacity: 0.6;
+  }
+  .card:hover .card-img {
+    transform: scale(1.02);
+    filter: brightness(1.1);
+  }
+  .card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 24px;
+    color: var(--dark);
+    margin-bottom: 8px;
+    font-weight: 400;
+    transition: color 0.3s;
+  }
+  .card:hover .card-name { color: var(--gold); }
+  .card-scent {
+    font-size: 11px;
+    color: var(--sage);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .card-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    color: var(--mid);
+  }
+  .card-hover-hint {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: rgba(0,0,0,0.5);
+    color: var(--cream);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    backdrop-filter: blur(4px);
+  }
+  .card:hover .card-hover-hint { opacity: 1; }
+
+  /* ============ STORY PREVIEW ============ */
+  .story {
+    padding: 140px 40px;
+    background: var(--cream-deep);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .story-img {
+    aspect-ratio: 4/5;
+    background: linear-gradient(135deg, #c4b08a, #8a6f4f);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Candle silhouette inside story image */
+  .story-candle {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+  }
+  .story-eyebrow {
+    font-size: 11px;
+    color: var(--sage);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .story-h {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 56px;
+    color: var(--dark);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 28px;
+    letter-spacing: -0.5px;
+  }
+  .story-h em { color: var(--gold); }
+  .story-p {
+    font-size: 15px;
+    color: var(--mid);
+    line-height: 1.95;
+    margin-bottom: 36px;
+  }
+  .story-link {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--dark);
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 4px;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .story-link:hover { color: var(--gold); padding-bottom: 8px; }
+
+  /* ============ VALUES ============ */
+  .values {
+    padding: 120px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .values-eyebrow {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .values-h {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 44px;
+    color: var(--dark);
+    font-weight: 300;
+    margin-bottom: 60px;
+    letter-spacing: -0.5px;
+  }
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+  }
+  .value-card {
+    text-align: center;
+    padding: 32px 20px;
+    transition: transform 0.5s ease;
+  }
+  .value-card:hover { transform: translateY(-6px); }
+  .value-icon {
+    width: 56px; height: 56px;
+    margin: 0 auto 24px;
+    color: var(--gold);
+    transition: transform 0.5s ease;
+  }
+  .value-card:hover .value-icon { transform: scale(1.1); }
+  .value-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--dark);
+    margin-bottom: 14px;
+    font-weight: 400;
+  }
+  .value-desc {
+    font-size: 14px;
+    color: var(--soft);
+    line-height: 1.8;
+  }
+
+  /* ============ COMPARISON ============ */
+  .compare {
+    padding: 120px 40px;
+    background: var(--cream-deep);
+  }
+  .compare-inner {
+    max-width: 1000px; margin: 0 auto;
+  }
+  .compare-eyebrow {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .compare-h {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 44px;
+    color: var(--dark);
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 50px;
+    letter-spacing: -0.5px;
+  }
+  .compare-table {
+    background: var(--cream);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-bottom: 1px solid rgba(184, 148, 90, 0.15);
+    transition: background 0.3s;
+  }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-row:hover { background: rgba(184, 148, 90, 0.04); }
+  .compare-cell {
+    padding: 24px 28px;
+    font-size: 14px;
+    color: var(--mid);
+  }
+  .compare-row.header .compare-cell {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--gold);
+    background: rgba(184, 148, 90, 0.06);
+  }
+  .compare-cell:first-child {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--dark);
+    font-size: 15px;
+  }
+  .compare-cell:last-child {
+    color: var(--dark);
+    font-weight: 500;
+  }
+
+  /* ============ QUOTE ============ */
+  .quote {
+    padding: 160px 40px;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 44px;
+    color: var(--dark);
+    font-weight: 300;
+    line-height: 1.4;
+    margin-bottom: 32px;
+    letter-spacing: -0.5px;
+  }
+  .quote-text::before, .quote-text::after {
+    content: '"';
+    color: var(--gold);
+  }
+  .quote-attr {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    padding: 80px 40px 40px;
+    background: var(--cream-deep);
+    text-align: center;
+  }
+  .foot-wordmark {
+    font-family: 'Allura', cursive;
+    font-size: 40px;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .foot-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    letter-spacing: 6px;
+    color: var(--mid);
+    margin-bottom: 28px;
+  }
+  .foot-ig {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+    padding: 14px 28px;
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    color: var(--dark);
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .foot-ig:hover { background: var(--gold); color: var(--cream); }
+  .foot-meta {
+    font-size: 10px;
+    color: var(--soft);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 40px;
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { gap: 14px; font-size: 9px; }
+    .nav-brand { font-size: 22px; }
+    .hero { padding: 100px 20px 40px; }
+    .hero-title { font-size: 38px; }
+    .hero-sub { font-size: 14px; }
+    .banner { padding: 80px 20px; }
+    .banner-h { font-size: 56px; letter-spacing: -1px; }
+    .collection { padding: 70px 20px; }
+    .grid { grid-template-columns: 1fr; gap: 30px; }
+    .story { grid-template-columns: 1fr; padding: 70px 20px; gap: 40px; }
+    .story-h { font-size: 36px; }
+    .values { padding: 70px 20px; }
+    .values-grid { grid-template-columns: 1fr; gap: 32px; }
+    .values-h { font-size: 32px; }
+    .compare { padding: 70px 20px; }
+    .compare-h { font-size: 32px; }
+    .compare-cell { padding: 16px; font-size: 12px; }
+    .quote { padding: 80px 20px; }
+    .quote-text { font-size: 28px; }
+    .cursor-flame { display: none; }
+    body { cursor: auto; }
+  }
+</style>
+</head>
+<body class="splash-active">
+
+<!-- ============ SPLASH INTRO SCREEN ============ -->
+<div class="splash" id="splash">
+  <!-- Real logo as centerpiece -->
+  <img src="logo-seffaf.png" alt="Mum Işığı Atölyesi" class="splash-logo">
+
+  <h2 class="splash-title">Bir mum hikayesi...</h2>
+
+  <h1 class="splash-quote">
+    Her büyük umut,<br/>
+    <em>küçük bir kıvılcımla</em> başlar.
+  </h1>
+
+  <div class="splash-buttons">
+    <button class="splash-btn splash-btn-primary" onclick="openVideo()">
+      ▶ Hikayemizi İzle
+    </button>
+    <button class="splash-btn splash-btn-secondary" onclick="enterSite()">
+      Atölyeye Gir →
+    </button>
+  </div>
+
+  <div class="splash-skip">Geçmek için herhangi bir yere tıkla</div>
+</div>
+
+<!-- ============ VIDEO MODAL ============ -->
+<div class="video-modal" id="videoModal">
+  <div class="video-modal-inner">
+    <button class="video-close" onclick="closeVideo()">×</button>
+
+    <!-- Gerçek video buraya gelecek. Şimdilik placeholder.
+         Video çekildikten sonra src="intro-video.mp4" gibi değiştir -->
+    <video id="introVideo" controls poster="" style="display:none;">
+      <source src="intro-video.mp4" type="video/mp4">
+    </video>
+
+    <!-- Video yoksa görünecek placeholder -->
+    <div class="video-placeholder" id="videoPlaceholder">
+      <svg class="video-placeholder-flame" viewBox="0 0 60 90">
+        <ellipse cx="30" cy="40" rx="22" ry="35" fill="#e8a447" opacity="0.4"/>
+        <path d="M 30 8 Q 15 35 15 65 Q 15 80 30 80 Q 45 80 45 65 Q 45 35 30 8 Z" fill="#f0c674"/>
+        <path d="M 30 25 Q 22 45 22 65 Q 22 75 30 75 Q 38 75 38 65 Q 38 45 30 25 Z" fill="#fde8b3"/>
+      </svg>
+      <p class="video-placeholder-text">
+        Hikayemiz yakında <em style="color:#e8a447;">burada.</em><br/>
+        Atölyeden ilk video çekilince paylaşacağız.
+      </p>
+      <p class="video-placeholder-sub">— Çok yakında —</p>
+    </div>
+  </div>
+</div>
+
+<!-- Cursor -->
+<div class="cursor-flame" id="cursorFlame">
+  <svg viewBox="0 0 20 20"><ellipse cx="10" cy="10" rx="5" ry="8" fill="#e8a447" opacity="0.6"/><ellipse cx="10" cy="11" rx="2.5" ry="5" fill="#fde8b3"/></svg>
+</div>
+
+<!-- Ambient particles -->
+<div class="ambient" id="ambient"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-brand">Mum Işığı</div>
+  <div class="nav-links">
+    <a href="koleksiyon.html"><span>Koleksiyon</span></a>
+    <a href="hikaye.html"><span>Hikaye</span></a>
+    <a href="gunluk.html"><span>Atölye Günlüğü</span></a>
+    <a href="iletisim.html"><span>İletişim</span></a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+  <!-- Animated logo -->
+  <div class="hero-logo">
+    <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- Decorative arc dots -->
+      <g class="l-deco">
+        <circle cx="90" cy="58" r="1" fill="#c8a866"/>
+        <circle cx="100" cy="52" r="1.2" fill="#c8a866"/>
+        <circle cx="110" cy="50" r="1.4" fill="#c8a866"/>
+        <circle cx="120" cy="52" r="1.2" fill="#c8a866"/>
+        <circle cx="130" cy="58" r="1" fill="#c8a866"/>
+      </g>
+
+      <!-- LEFT leaves -->
+      <g class="l-leaf-l" style="transform-origin: 80px 100px;">
+        <path d="M 80 90 Q 60 80 50 75 Q 45 78 50 85 Q 60 95 80 95 Z" fill="#9eab8a" opacity="0.85"/>
+        <path d="M 75 110 Q 55 108 42 105 Q 38 110 45 115 Q 60 120 78 115 Z" fill="#b5c4a3" opacity="0.85"/>
+        <path d="M 80 125 Q 60 130 48 130 Q 45 135 52 138 Q 68 140 82 132 Z" fill="#9eab8a" opacity="0.8"/>
+      </g>
+
+      <!-- RIGHT leaves & flowers -->
+      <g class="l-leaf-r" style="transform-origin: 140px 100px;">
+        <path d="M 140 90 Q 160 80 170 75 Q 175 78 170 85 Q 160 95 140 95 Z" fill="#e8dcc8" opacity="0.85"/>
+        <path d="M 145 110 Q 165 108 178 105 Q 182 110 175 115 Q 160 120 142 115 Z" fill="#d8c9af" opacity="0.85"/>
+      </g>
+      <g class="l-flower" style="transform-origin: 170px 105px;">
+        <circle cx="165" cy="90" r="3" fill="#f0e8d8" stroke="#c8a866" stroke-width="0.5"/>
+        <circle cx="165" cy="90" r="1" fill="#c8a866"/>
+        <circle cx="175" cy="102" r="3.5" fill="#f0e8d8" stroke="#c8a866" stroke-width="0.5"/>
+        <circle cx="175" cy="102" r="1.2" fill="#c8a866"/>
+        <circle cx="172" cy="115" r="2.5" fill="#f0e8d8" stroke="#c8a866" stroke-width="0.5"/>
+      </g>
+
+      <!-- Jar (candle vessel) -->
+      <g class="l-jar">
+        <path d="M 88 95 Q 88 88 95 88 L 125 88 Q 132 88 132 95 L 132 145 Q 132 148 130 148 L 90 148 Q 88 148 88 145 Z"
+              fill="#faf6ee" stroke="#b8945a" stroke-width="1"/>
+        <!-- Small leaf inside jar -->
+        <g opacity="0.7">
+          <path d="M 108 122 Q 105 115 108 110 Q 111 115 108 122 Z" fill="#9eab8a"/>
+          <path d="M 112 122 Q 115 115 112 110 Q 109 115 112 122 Z" fill="#9eab8a"/>
+          <line x1="110" y1="122" x2="110" y2="128" stroke="#9eab8a" stroke-width="0.5"/>
+          <path d="M 110 132 L 108 130 Q 107 128 109 128 Q 110 128 110 129 Q 110 128 111 128 Q 113 128 112 130 Z" fill="#c8a866"/>
+        </g>
+        <!-- Wick -->
+        <line x1="110" y1="88" x2="110" y2="82" stroke="#3d2f22" stroke-width="1"/>
+      </g>
+
+      <!-- FLAME -->
+      <g class="l-flame">
+        <ellipse cx="110" cy="76" rx="8" ry="12" fill="#f5d989" opacity="0.5"/>
+        <path d="M 110 64 Q 104 74 104 82 Q 104 88 110 88 Q 116 88 116 82 Q 116 74 110 64 Z" fill="#f0c674"/>
+        <path d="M 110 72 Q 107 78 107 82 Q 107 85 110 85 Q 113 85 113 82 Q 113 78 110 72 Z" fill="#fde8b3"/>
+      </g>
+
+      <!-- "Mum Işığı" script -->
+      <text class="l-script" x="110" y="178" text-anchor="middle"
+            font-family="Allura, cursive" font-size="32" fill="#c8a866">Mum Işığı</text>
+
+      <!-- "ATÖLYESİ" -->
+      <text class="l-atolyesi" x="110" y="200" text-anchor="middle"
+            font-family="Cormorant Garamond, serif" font-size="9"
+            fill="#5a4632" letter-spacing="4">ATÖLYESİ</text>
+    </svg>
+  </div>
+
+  <div class="hero-eyebrow">— El yapımı · Küçük üretim · Türkiye —</div>
+
+  <h1 class="hero-title">
+    <span class="word">Sessizlikle</span>
+    <span class="word">yapılır,</span>
+    <span class="word"><em>sessizlikte</em></span>
+    <span class="word"><em>yanar.</em></span>
+  </h1>
+
+  <p class="hero-sub">
+    Küçük bir atölyede, doğal soya mumundan, özenle seçilmiş kokularla — bir mumu döken kadar sabırlı bir dünyaya.
+  </p>
+
+  <a href="#koleksiyon" class="hero-cta">Koleksiyonu Keşfet →</a>
+
+  <div class="scroll-hint">↓ Aşağı kaydır</div>
+</section>
+
+<!-- ============ EDITORIAL BANNER ============ -->
+<section class="banner reveal">
+  <div class="banner-eyebrow">— Atölye Felsefesi —</div>
+  <h2 class="banner-h">Yavaş yapılan, <em>uzun yanan.</em></h2>
+</section>
+
+<!-- ============ ATMOSPHERIC HERO IMAGE ============ -->
+<section class="atmospheric reveal">
+  <div class="atmospheric-img"></div>
+  <div class="atmospheric-overlay">
+    <p class="atmospheric-quote">
+      <em>"Bir mumu yakmak,<br/>sadece bir odayı aydınlatmak değil;<br/>bir anıyı canlandırmaktır."</em>
+    </p>
+  </div>
+</section>
+
+<!-- ============ COLLECTION ============ -->
+<section class="collection" id="koleksiyon">
+  <div class="col-head reveal">
+    <div class="col-eyebrow">— Koleksiyon · 2026 İlkbahar —</div>
+    <a href="koleksiyon.html" class="col-link">Tümünü Gör →</a>
+  </div>
+
+  <div class="grid">
+    <!-- CARD 1 -->
+    <a class="card clickable reveal reveal-delay-1" href="urun-karsilasma.html" style="text-decoration:none;color:inherit;">
+      <div class="card-num">— 01 —</div>
+      <div class="card-img" style="background-image:url('kirmizi-gul-1.jpg');background-size:cover;background-position:center;">
+        <div class="card-hover-hint">✦ Detayları gör</div>
+      </div>
+      <h3 class="card-name">Karşılaşma</h3>
+      <div class="card-scent">Gül · Sandal · Misk</div>
+      <div class="card-price" style="color:var(--gold);border-bottom:1px solid var(--gold);display:inline-block;padding-bottom:3px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;font-family:'Inter',sans-serif;">İletişime Geç →</div>
+    </a>
+
+    <!-- CARD 2 -->
+    <a class="card clickable reveal reveal-delay-2" href="urun-sis.html" style="text-decoration:none;color:inherit;">
+      <div class="card-num">— 02 —</div>
+      <div class="card-img" style="background-image:url('gri-spiral-1.jpg');background-size:cover;background-position:center;">
+        <div class="card-hover-hint">✦ Detayları gör</div>
+      </div>
+      <h3 class="card-name">Sis</h3>
+      <div class="card-scent">Sandal Ağacı · Amber · Tütsü</div>
+      <div class="card-price" style="color:var(--gold);border-bottom:1px solid var(--gold);display:inline-block;padding-bottom:3px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;font-family:'Inter',sans-serif;">İletişime Geç →</div>
+    </a>
+
+    <!-- CARD 3 -->
+    <a class="card clickable reveal reveal-delay-3" href="urun-akdeniz.html" style="text-decoration:none;color:inherit;">
+      <div class="card-num">— 03 —</div>
+      <div class="card-img" style="background-image:url('deniz-kabugu-1.jpg');background-size:cover;background-position:center;">
+        <div class="card-hover-hint">✦ Detayları gör</div>
+      </div>
+      <h3 class="card-name">Akdeniz</h3>
+      <div class="card-scent">Portakal Çiçeği · Defne · Deniz Tuzu</div>
+      <div class="card-price" style="color:var(--gold);border-bottom:1px solid var(--gold);display:inline-block;padding-bottom:3px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;font-family:'Inter',sans-serif;">İletişime Geç →</div>
+    </a>
+  </div>
+</section>
+
+<!-- ============ STORY ============ -->
+<section class="story reveal">
+  <div class="story-img">
+    <svg class="story-candle" viewBox="0 0 100 140">
+      <ellipse cx="50" cy="20" rx="20" ry="30" fill="#f5d989" opacity="0.3"/>
+      <path d="M 28 50 Q 28 45 33 45 L 67 45 Q 72 45 72 50 L 72 135 L 28 135 Z"
+            fill="rgba(255,250,235,0.85)" stroke="#b8945a" stroke-width="0.8"/>
+      <line x1="50" y1="45" x2="50" y2="38" stroke="#3d2f22" stroke-width="1.2"/>
+      <ellipse cx="50" cy="30" rx="6" ry="10" fill="#f5d989" opacity="0.6"/>
+      <path d="M 50 18 Q 46 28 46 36 Q 46 42 50 42 Q 54 42 54 36 Q 54 28 50 18 Z" fill="#f0c674">
+        <animateTransform attributeName="transform" type="scale"
+                          values="1,1; 1.05,0.95; 0.97,1.05; 1,1"
+                          dur="2.5s" repeatCount="indefinite"
+                          additive="sum"/>
+      </path>
+      <path d="M 50 26 Q 48 32 48 36 Q 48 39 50 39 Q 52 39 52 36 Q 52 32 50 26 Z" fill="#fde8b3"/>
+    </svg>
+  </div>
+  <div>
+    <div class="story-eyebrow">— Atölyeden —</div>
+    <h2 class="story-h">Karanlıktan <em>aydınlığa</em>, bir kıvılcımla.</h2>
+    <p class="story-p">
+      Mum Işığı Atölyesi, küçük bir tezgâhta, sessiz bir niyetle başladı. Her büyük umut, küçük bir kıvılcımla başlar — biz de bu inançla, her mumu tek tek dökmeyi, dinlendirmeyi, elle etiketlemeyi seçtik.
+    </p>
+    <p class="story-p" style="margin-top:-16px;">
+      Bir mumu yakmak, sadece bir odayı aydınlatmak değil; bir anıyı canlandırmaktır.
+    </p>
+    <a href="#" class="story-link">Hikayemizi Oku →</a>
+  </div>
+</section>
+
+<!-- ============ VALUES ============ -->
+<section class="values reveal">
+  <div class="values-eyebrow">— Temel Değerlerimiz —</div>
+  <h2 class="values-h">Her mumda <em style="color:var(--gold);font-style:italic">üç şey</em> var.</h2>
+
+  <div class="values-grid">
+    <div class="value-card">
+      <svg class="value-icon" viewBox="0 0 56 56" fill="none">
+        <path d="M28 48 L12 32 Q4 24 12 16 Q20 8 28 16 Q36 8 44 16 Q52 24 44 32 Z"
+              stroke="currentColor" stroke-width="1.5" fill="rgba(184,148,90,0.08)"/>
+      </svg>
+      <h3 class="value-name">Samimiyet</h3>
+      <p class="value-desc">Her mumu, evimize koyacağımız o sıcaklığı düşünerek hazırlıyoruz.</p>
+    </div>
+
+    <div class="value-card">
+      <svg class="value-icon" viewBox="0 0 56 56" fill="none">
+        <path d="M18 32 Q14 24 16 16 Q24 14 28 22 Q32 14 40 16 Q42 24 38 32 Q30 36 28 44 Q26 36 18 32 Z"
+              stroke="currentColor" stroke-width="1.5" fill="rgba(184,148,90,0.08)"/>
+        <circle cx="28" cy="28" r="2" fill="currentColor"/>
+      </svg>
+      <h3 class="value-name">El Emeği</h3>
+      <p class="value-desc">Artizanal üretim sürecimizle her ürüne ruhumuzu katıyoruz.</p>
+    </div>
+
+    <div class="value-card">
+      <svg class="value-icon" viewBox="0 0 56 56" fill="none">
+        <path d="M28 8 Q22 20 22 30 Q22 40 28 46 Q34 40 34 30 Q34 20 28 8 Z"
+              stroke="currentColor" stroke-width="1.5" fill="rgba(184,148,90,0.08)"/>
+        <path d="M28 20 Q26 28 26 32 Q26 36 28 38 Q30 36 30 32 Q30 28 28 20 Z"
+              fill="currentColor" opacity="0.6"/>
+      </svg>
+      <h3 class="value-name">Umut</h3>
+      <p class="value-desc">Küçük bir alevin büyük dönüşümler başlatabileceğine inanıyoruz.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARISON ============ -->
+<section class="compare reveal">
+  <div class="compare-inner">
+    <div class="compare-eyebrow">— Neden Mum Işığı —</div>
+    <h2 class="compare-h">Bir mum, <em style="color:var(--gold);font-style:italic">bir mum değildir.</em></h2>
+
+    <div class="compare-table">
+      <div class="compare-row header">
+        <div class="compare-cell">Özellik</div>
+        <div class="compare-cell">Endüstriyel Mumlar</div>
+        <div class="compare-cell">Mum Işığı Atölyesi</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Hammadde</div>
+        <div class="compare-cell">Parafin (petrol türevi)</div>
+        <div class="compare-cell">%100 Saf Soya Mumu</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Koku</div>
+        <div class="compare-cell">Sentetik ve yoğun</div>
+        <div class="compare-cell">Doğal esansiyel yağlar</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Yanma süresi</div>
+        <div class="compare-cell">Hızlı (20-30 saat)</div>
+        <div class="compare-cell">Uzun ömürlü (50+ saat)</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Çevresel etki</div>
+        <div class="compare-cell">Karbon salınımı yüksek</div>
+        <div class="compare-cell">Eco-friendly, biyo-bozunur</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Ruh ve tasarım</div>
+        <div class="compare-cell">Mekanik seri üretim</div>
+        <div class="compare-cell">Hikayesi olan el emeği</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUOTE ============ -->
+<section class="quote reveal">
+  <p class="quote-text">Bazen tek bir ışık, karanlığı yenmek için yeterli bir umuttur. Biz o ışığı el emeğimizle harmanlıyoruz.</p>
+  <div class="quote-attr">— Mum Işığı Atölyesi Vizyon Bildirisi</div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="foot-wordmark">Mum Işığı</div>
+  <div class="foot-sub">A T Ö L Y E S İ</div>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <a href="https://wa.me/905462322939?text=Merhaba,%20Mum%20Işığı%20Atölyesi'nden%20bilgi%20almak%20istiyorum." class="foot-ig" target="_blank" rel="noopener">✦ WhatsApp · 0546 232 29 39</a>
+    <a href="https://instagram.com/mumisigi.atolye" class="foot-ig" target="_blank" rel="noopener">◆ @mumisigi.atolye</a>
+  </div>
+  <div class="foot-meta">© 2026 · El yapımı, Türkiye · mumisigiatolyesi.com</div>
+</footer>
+
+<script>
+  // ============ SPLASH SCREEN ============
+  // After logo enters, start the gentle floating animation
+  setTimeout(() => {
+    const logo = document.querySelector('.splash-logo');
+    if (logo) logo.classList.add('entered');
+  }, 2300);
+
+  function enterSite() {
+    const splash = document.getElementById('splash');
+    splash.classList.add('fade-out');
+    document.body.classList.remove('splash-active');
+    
+    // Trigger hero animation after splash fades
+    setTimeout(() => {
+      document.getElementById('hero').classList.add('animate-in');
+      splash.remove(); // Tamamen kaldır
+    }, 1200);
+  }
+
+  function openVideo() {
+    const modal = document.getElementById('videoModal');
+    const video = document.getElementById('introVideo');
+    const placeholder = document.getElementById('videoPlaceholder');
+    
+    modal.classList.add('show');
+    
+    // Video varsa onu göster, yoksa placeholder
+    // Video dosyası eklendiğinde otomatik algılanır
+    video.addEventListener('error', () => {
+      video.style.display = 'none';
+      placeholder.style.display = 'flex';
+    }, { once: true });
+    
+    video.addEventListener('loadeddata', () => {
+      video.style.display = 'block';
+      placeholder.style.display = 'none';
+      video.play();
+    }, { once: true });
+    
+    // Try to load - if fails, placeholder shows
+    video.load();
+  }
+
+  function closeVideo() {
+    const modal = document.getElementById('videoModal');
+    const video = document.getElementById('introVideo');
+    modal.classList.remove('show');
+    video.pause();
+  }
+
+  // Splash'i herhangi bir yere tıklayarak da geç
+  document.getElementById('splash').addEventListener('click', (e) => {
+    // Buton tıklamalarını ezme
+    if (e.target.classList.contains('splash-btn') || e.target.closest('.splash-btn')) return;
+    if (e.target.classList.contains('splash-buttons') || e.target.closest('.splash-buttons')) return;
+    enterSite();
+  });
+
+  // ESC ile video kapat
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeVideo();
+  });
+
+  // Custom cursor
+  const cursor = document.getElementById('cursorFlame');
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+  });
+
+  // Hero animation now triggered by enterSite(), not on load
+
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Ambient floating particles (subtle, low frequency)
+  const ambient = document.getElementById('ambient');
+  function createAmbientParticle() {
+    const p = document.createElement('div');
+    p.className = 'ambient-dot';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = '100%';
+    ambient.appendChild(p);
+    const duration = 12000 + Math.random() * 8000;
+    const drift = (Math.random() - 0.5) * 200;
+    p.animate([
+      { opacity: 0, transform: 'translateY(0) translateX(0)' },
+      { opacity: 0.5, offset: 0.2 },
+      { opacity: 0.5, offset: 0.8 },
+      { opacity: 0, transform: `translateY(-110vh) translateX(${drift}px)` }
+    ], { duration: duration, easing: 'linear' });
+    setTimeout(() => p.remove(), duration);
+  }
+  // Only on desktop, low rate
+  if (window.innerWidth > 768) {
+    setInterval(createAmbientParticle, 2500);
+  }
+
+  // Card click → goes to product detail
+  const productLinks = {
+    'Karşılaşma': 'urun-karsilasma.html',
+    'Sis': 'urun-sis.html',
+    'Akdeniz': 'urun-akdeniz.html'
+  };
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => {
+      const nameEl = card.querySelector('.card-name');
+      if (!nameEl) return;
+      const name = nameEl.textContent;
+      if (productLinks[name]) window.location.href = productLinks[name];
+    });
+  });
+</script>
+
+
+<!-- Floating Quick Contact Buttons -->
+<style>
+  .fab-wrap { position: fixed; bottom: 24px; right: 24px; z-index: 998; display: flex; flex-direction: column; gap: 12px; }
+  .fab { width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; box-shadow: 0 6px 20px rgba(60,40,20,0.25); transition: all 0.3s ease; cursor: pointer; }
+  .fab:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 10px 28px rgba(60,40,20,0.35); }
+  .fab-wa { background: #25D366; }
+  .fab-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+  .fab svg { width: 28px; height: 28px; fill: white; }
+  .fab-label { position: absolute; right: 64px; top: 50%; transform: translateY(-50%); background: rgba(61,47,34,0.95); color: #faf6ee; padding: 8px 14px; border-radius: 6px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+  .fab:hover .fab-label { opacity: 1; }
+  @media (max-width: 768px) { .fab-wrap { bottom: 16px; right: 16px; gap: 10px; } .fab { width: 48px; height: 48px; } .fab svg { width: 24px; height: 24px; } .fab-label { display: none; } }
+</style>
+<div class="fab-wrap">
+  <a href="https://wa.me/905462322939?text=Merhaba,%20Mum%20Işığı%20Atölyesi'nden%20bilgi%20almak%20istiyorum." class="fab fab-wa" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <span class="fab-label">WhatsApp ile yaz</span>
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+  <a href="https://instagram.com/mumisigi.atolye" class="fab fab-ig" target="_blank" rel="noopener" aria-label="Instagram">
+    <span class="fab-label">Instagram'da takip et</span>
+    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+  </a>
+</div>
+
+</body>
+</html>
