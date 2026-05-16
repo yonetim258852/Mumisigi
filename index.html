@@ -103,6 +103,31 @@
     75% { transform: scale(1.03, 0.98) rotate(-0.5deg); }
   }
 
+  /* Splash credit — "by Merve Aslan" */
+  .splash-credit {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    color: rgba(250, 246, 238, 0.55);
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-top: -10px;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: splashCreditIn 1.5s ease 1.2s forwards;
+    position: relative;
+    z-index: 2;
+  }
+  .splash-credit em {
+    color: rgba(232, 164, 71, 0.85);
+    font-style: italic;
+    font-weight: 400;
+  }
+  @keyframes splashCreditIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* Splash title — "Bir mum hikayesi..." */
   .splash-title {
     font-family: 'Cormorant Garamond', serif;
@@ -220,32 +245,36 @@
   .video-modal {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.95);
+    background: #000;
     z-index: 10000;
     display: none;
     align-items: center;
     justify-content: center;
-    padding: 40px;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.8s ease;
   }
   .video-modal.show {
     display: flex;
     opacity: 1;
   }
+  .video-modal.fading-out {
+    opacity: 0;
+  }
   .video-modal-inner {
     position: relative;
     width: 100%;
-    max-width: 960px;
-    aspect-ratio: 16/9;
-    background: #111;
-    border-radius: 4px;
+    height: 100vh;
+    background: #000;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .video-modal video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    background: #000;
   }
   .video-placeholder {
     position: absolute;
@@ -281,30 +310,186 @@
   }
   .video-close {
     position: absolute;
-    top: -50px; right: 0;
-    background: transparent;
-    border: 1px solid rgba(250, 246, 238, 0.4);
+    top: 24px; right: 24px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(250, 246, 238, 0.3);
     color: #faf6ee;
-    width: 40px; height: 40px;
+    width: 44px; height: 44px;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 20px;
     transition: all 0.3s;
+    z-index: 100;
+    backdrop-filter: blur(10px);
   }
   .video-close:hover {
     border-color: #e8a447;
     color: #e8a447;
+    background: rgba(0, 0, 0, 0.7);
   }
 
   /* Mobile */
   @media (max-width: 768px) {
     .splash-logo { width: 220px; height: 220px; margin-bottom: 20px; }
+    .splash-credit { font-size: 12px; margin-bottom: 18px; }
     .splash-title { font-size: 16px; letter-spacing: 3px; margin-bottom: 30px; }
     .splash-quote { font-size: 28px; margin-bottom: 40px; }
     .splash-buttons { flex-direction: column; width: 100%; max-width: 280px; }
     .splash-btn { width: 100%; justify-content: center; }
-    .video-modal { padding: 20px; }
-    .video-close { top: -45px; }
+    .video-modal { padding: 0; }
+    .video-close { top: 16px; right: 16px; }
+  }
+
+  /* ============ CINEMATIC TRANSITION ============
+     Video bitti, son karesi LOGOMUZ. Bridge başlar ve logo
+     videodan splash'e KESINTISIZ devam eder. */
+  .cinematic-bridge {
+    position: fixed;
+    inset: 0;
+    z-index: 10001;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    overflow: hidden;
+  }
+  .cinematic-bridge.active {
+    display: flex;
+  }
+
+  /* Phase 1: Soft golden glow blooms (video logosu zaten görünüyor) */
+  .cb-flash {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(232, 164, 71, 0.4) 0%, rgba(232, 164, 71, 0.1) 30%, transparent 60%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .cinematic-bridge.active .cb-flash {
+    animation: cbFlash 2s ease-out forwards;
+  }
+  @keyframes cbFlash {
+    0% { opacity: 0; transform: scale(0.6); }
+    40% { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 0; transform: scale(1.5); }
+  }
+
+  /* Phase 2: Subtle vertical light beam from behind logo */
+  .cb-beam {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 200px;
+    height: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(232, 164, 71, 0.3) 30%, rgba(253, 232, 179, 0.4) 50%, rgba(232, 164, 71, 0.3) 70%, transparent 100%);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    filter: blur(20px);
+  }
+  .cinematic-bridge.active .cb-beam {
+    animation: cbBeam 2.5s ease-out forwards;
+  }
+  @keyframes cbBeam {
+    0% { opacity: 0; height: 0; }
+    30% { opacity: 0.6; height: 100vh; }
+    100% { opacity: 0; height: 100vh; }
+  }
+
+  /* Phase 3: Golden particles rising softly */
+  .cb-particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .cb-particle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 4px; height: 4px;
+    background: #e8a447;
+    border-radius: 50%;
+    box-shadow: 0 0 12px #e8a447;
+    opacity: 0;
+  }
+  .cinematic-bridge.active .cb-particle {
+    animation: cbParticleRise 3s ease-out forwards;
+  }
+  @keyframes cbParticleRise {
+    0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); }
+    30% { opacity: 0.9; }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--drift, 0px)), -90vh) scale(1.2); }
+  }
+
+  /* Phase 4: Logo APPEARS FROM VIDEO'S LAST FRAME — smooth handoff */
+  .cb-logo {
+    width: 380px;
+    height: 380px;
+    opacity: 1; /* Hemen görünür - video sonundaki logoyla aynı görüntü */
+    transform: scale(1);
+    z-index: 10;
+    filter: drop-shadow(0 0 60px rgba(232, 164, 71, 0.6));
+    animation: cbLogoPulse 4s ease-in-out infinite;
+  }
+  @keyframes cbLogoPulse {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 50px rgba(232, 164, 71, 0.5)); }
+    50% { transform: scale(1.03); filter: drop-shadow(0 0 80px rgba(232, 164, 71, 0.8)); }
+  }
+
+  /* Phase 5: Tagline appears below */
+  .cb-tagline {
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: #e8a447;
+    font-size: 16px;
+    letter-spacing: 6px;
+    text-transform: lowercase;
+    opacity: 0;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .cinematic-bridge.active .cb-tagline {
+    animation: cbTagline 1.5s ease 1.5s forwards;
+  }
+  @keyframes cbTagline {
+    from { opacity: 0; letter-spacing: 12px; }
+    to { opacity: 0.9; letter-spacing: 6px; }
+  }
+
+  /* Phase 6: Continue button */
+  .cb-continue {
+    position: absolute;
+    bottom: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 14px 32px;
+    background: rgba(250, 246, 238, 0.1);
+    border: 1px solid rgba(232, 164, 71, 0.4);
+    color: #faf6ee;
+    border-radius: 999px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transition: all 0.3s;
+  }
+  .cinematic-bridge.active .cb-continue {
+    animation: cbTagline 1.5s ease 2.5s forwards;
+  }
+  .cb-continue:hover {
+    border-color: #e8a447;
+    background: rgba(232, 164, 71, 0.15);
+    transform: translateX(-50%) translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .cb-logo { width: 260px; height: 260px; }
+    .cb-tagline { font-size: 13px; letter-spacing: 4px; }
   }
 
   /* Custom cursor */
@@ -380,61 +565,34 @@
     text-align: center;
   }
 
-  /* Animated logo container */
+  /* Hero logo container - watercolor logo */
   .hero-logo {
-    width: 220px; height: 220px;
+    width: 320px; height: 320px;
     margin-bottom: 30px;
     position: relative;
-  }
-  .hero-logo svg { width: 100%; height: 100%; }
-
-  /* Logo elements animation states */
-  .l-jar, .l-leaf-l, .l-leaf-r, .l-flower {
     opacity: 0;
-    transform-origin: center bottom;
+    transform: scale(0.92);
+    filter: drop-shadow(0 0 0 rgba(232, 164, 71, 0));
+    transition: opacity 1.5s ease, transform 1.5s cubic-bezier(0.34, 1.3, 0.64, 1), filter 1.5s ease;
   }
-  .l-flame { opacity: 0; transform-origin: center bottom; transform: scale(0); }
-  .l-script { opacity: 0; }
-  .l-atolyesi { opacity: 0; }
-  .l-deco { opacity: 0; }
-
-  .animate-in .l-jar {
-    animation: fadeUp 1s cubic-bezier(0.34, 1.4, 0.64, 1) 0.2s forwards;
+  .hero-logo-img {
+    width: 100%; height: 100%;
+    user-select: none;
+    -webkit-user-drag: none;
+    object-fit: contain;
   }
-  .animate-in .l-flame {
-    animation: ignite 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1s forwards,
-               flicker 2.5s ease-in-out 1.8s infinite;
+  .animate-in .hero-logo {
+    opacity: 1;
+    transform: scale(1);
+    filter: drop-shadow(0 0 30px rgba(232, 164, 71, 0.25));
+    animation: heroLogoFloat 5s ease-in-out 2s infinite;
   }
-  .animate-in .l-leaf-l {
-    animation: bloomLeft 0.8s cubic-bezier(0.34, 1.4, 0.64, 1) 1.2s forwards;
-  }
-  .animate-in .l-leaf-r {
-    animation: bloomRight 0.8s cubic-bezier(0.34, 1.4, 0.64, 1) 1.4s forwards;
-  }
-  .animate-in .l-flower {
-    animation: bloom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.6s forwards;
-  }
-  .animate-in .l-deco {
-    animation: fadeIn 0.6s ease 1.8s forwards;
-  }
-  .animate-in .l-script {
-    animation: writeText 1.2s cubic-bezier(0.65, 0, 0.35, 1) 2s forwards;
-  }
-  .animate-in .l-atolyesi {
-    animation: fadeUp 0.6s ease 3s forwards;
+  @keyframes heroLogoFloat {
+    0%, 100% { transform: scale(1) translateY(0); }
+    50% { transform: scale(1) translateY(-8px); }
   }
 
-  @keyframes fadeIn { to { opacity: 1; } }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes ignite {
-    0% { opacity: 0; transform: scale(0); }
-    60% { opacity: 1; transform: scale(1.3); }
-    100% { opacity: 1; transform: scale(1); }
-  }
-  @keyframes flicker {
+  /* OLD SVG logo styles kept for backward compatibility (boş - artık SVG yok) */
     0%, 100% { transform: scale(1) rotate(0); }
     25% { transform: scale(1.05, 0.95) rotate(-1deg); }
     50% { transform: scale(0.97, 1.05) rotate(1deg); }
@@ -464,7 +622,7 @@
     text-transform: uppercase;
     margin-bottom: 24px;
     opacity: 0;
-    animation: fadeUp 0.8s ease 3.4s forwards;
+    animation: fadeUp 0.8s ease 1.8s forwards;
   }
 
   .hero-title {
@@ -489,11 +647,11 @@
   .animate-in .hero-title .word {
     animation: fadeUp 0.6s ease forwards;
   }
-  .animate-in .hero-title .word:nth-child(1) { animation-delay: 3.6s; }
-  .animate-in .hero-title .word:nth-child(2) { animation-delay: 3.75s; }
-  .animate-in .hero-title .word:nth-child(3) { animation-delay: 3.9s; }
-  .animate-in .hero-title .word:nth-child(4) { animation-delay: 4.05s; }
-  .animate-in .hero-title .word:nth-child(5) { animation-delay: 4.2s; }
+  .animate-in .hero-title .word:nth-child(1) { animation-delay: 2s; }
+  .animate-in .hero-title .word:nth-child(2) { animation-delay: 2.15s; }
+  .animate-in .hero-title .word:nth-child(3) { animation-delay: 2.3s; }
+  .animate-in .hero-title .word:nth-child(4) { animation-delay: 2.45s; }
+  .animate-in .hero-title .word:nth-child(5) { animation-delay: 2.6s; }
 
   .hero-sub {
     font-size: 15px;
@@ -502,7 +660,7 @@
     max-width: 440px;
     margin: 0 auto 40px;
     opacity: 0;
-    animation: fadeUp 0.8s ease 4.5s forwards;
+    animation: fadeUp 0.8s ease 2.9s forwards;
   }
 
   .hero-cta {
@@ -519,7 +677,7 @@
     cursor: pointer;
     transition: all 0.3s;
     opacity: 0;
-    animation: fadeUp 0.8s ease 4.8s forwards;
+    animation: fadeUp 0.8s ease 3.2s forwards;
     position: relative;
     overflow: hidden;
   }
@@ -563,7 +721,7 @@
   .atmospheric-img {
     position: absolute;
     inset: 0;
-    background-image: url('yanan-mumlar-banner.jpg');
+    background-image: url('gul-buketi-1.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -1018,6 +1176,7 @@
     .nav-links { gap: 14px; font-size: 9px; }
     .nav-brand { font-size: 22px; }
     .hero { padding: 100px 20px 40px; }
+    .hero-logo { width: 220px; height: 220px; margin-bottom: 20px; }
     .hero-title { font-size: 38px; }
     .hero-sub { font-size: 14px; }
     .banner { padding: 80px 20px; }
@@ -1046,6 +1205,8 @@
   <!-- Real logo as centerpiece -->
   <img src="logo-seffaf.png" alt="Mum Işığı Atölyesi" class="splash-logo">
 
+  <p class="splash-credit">by <em>Merve Aslan</em></p>
+
   <h2 class="splash-title">Bir mum hikayesi...</h2>
 
   <h1 class="splash-quote">
@@ -1070,9 +1231,8 @@
   <div class="video-modal-inner">
     <button class="video-close" onclick="closeVideo()">×</button>
 
-    <!-- Gerçek video buraya gelecek. Şimdilik placeholder.
-         Video çekildikten sonra src="intro-video.mp4" gibi değiştir -->
-    <video id="introVideo" controls poster="" style="display:none;">
+    <!-- Cinematic video player. Video bitince logo'da dondurur, sonra cinematic bridge'e geçer -->
+    <video id="introVideo" playsinline preload="auto" style="display:none;">
       <source src="intro-video.mp4" type="video/mp4">
     </video>
 
@@ -1090,6 +1250,16 @@
       <p class="video-placeholder-sub">— Çok yakında —</p>
     </div>
   </div>
+</div>
+
+<!-- ============ CINEMATIC BRIDGE (video → logo geçişi) ============ -->
+<div class="cinematic-bridge" id="cinematicBridge">
+  <div class="cb-flash"></div>
+  <div class="cb-beam"></div>
+  <div class="cb-particles" id="cbParticles"></div>
+  <img class="cb-logo" src="logo-seffaf.png" alt="Mum Işığı Atölyesi">
+  <div class="cb-tagline">— mum ışığı atölyesi —</div>
+  <button class="cb-continue" onclick="finishBridgeAndEnter()">Atölyeye Gir →</button>
 </div>
 
 <!-- Cursor -->
@@ -1113,70 +1283,9 @@
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="hero">
-  <!-- Animated logo -->
+  <!-- Real watercolor logo -->
   <div class="hero-logo">
-    <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
-
-      <!-- Decorative arc dots -->
-      <g class="l-deco">
-        <circle cx="90" cy="58" r="1" fill="#c8a866"/>
-        <circle cx="100" cy="52" r="1.2" fill="#c8a866"/>
-        <circle cx="110" cy="50" r="1.4" fill="#c8a866"/>
-        <circle cx="120" cy="52" r="1.2" fill="#c8a866"/>
-        <circle cx="130" cy="58" r="1" fill="#c8a866"/>
-      </g>
-
-      <!-- LEFT leaves -->
-      <g class="l-leaf-l" style="transform-origin: 80px 100px;">
-        <path d="M 80 90 Q 60 80 50 75 Q 45 78 50 85 Q 60 95 80 95 Z" fill="#9eab8a" opacity="0.85"/>
-        <path d="M 75 110 Q 55 108 42 105 Q 38 110 45 115 Q 60 120 78 115 Z" fill="#b5c4a3" opacity="0.85"/>
-        <path d="M 80 125 Q 60 130 48 130 Q 45 135 52 138 Q 68 140 82 132 Z" fill="#9eab8a" opacity="0.8"/>
-      </g>
-
-      <!-- RIGHT leaves & flowers -->
-      <g class="l-leaf-r" style="transform-origin: 140px 100px;">
-        <path d="M 140 90 Q 160 80 170 75 Q 175 78 170 85 Q 160 95 140 95 Z" fill="#e8dcc8" opacity="0.85"/>
-        <path d="M 145 110 Q 165 108 178 105 Q 182 110 175 115 Q 160 120 142 115 Z" fill="#d8c9af" opacity="0.85"/>
-      </g>
-      <g class="l-flower" style="transform-origin: 170px 105px;">
-        <circle cx="165" cy="90" r="3" fill="#f0e8d8" stroke="#c8a866" stroke-width="0.5"/>
-        <circle cx="165" cy="90" r="1" fill="#c8a866"/>
-        <circle cx="175" cy="102" r="3.5" fill="#f0e8d8" stroke="#c8a866" stroke-width="0.5"/>
-        <circle cx="175" cy="102" r="1.2" fill="#c8a866"/>
-        <circle cx="172" cy="115" r="2.5" fill="#f0e8d8" stroke="#c8a866" stroke-width="0.5"/>
-      </g>
-
-      <!-- Jar (candle vessel) -->
-      <g class="l-jar">
-        <path d="M 88 95 Q 88 88 95 88 L 125 88 Q 132 88 132 95 L 132 145 Q 132 148 130 148 L 90 148 Q 88 148 88 145 Z"
-              fill="#faf6ee" stroke="#b8945a" stroke-width="1"/>
-        <!-- Small leaf inside jar -->
-        <g opacity="0.7">
-          <path d="M 108 122 Q 105 115 108 110 Q 111 115 108 122 Z" fill="#9eab8a"/>
-          <path d="M 112 122 Q 115 115 112 110 Q 109 115 112 122 Z" fill="#9eab8a"/>
-          <line x1="110" y1="122" x2="110" y2="128" stroke="#9eab8a" stroke-width="0.5"/>
-          <path d="M 110 132 L 108 130 Q 107 128 109 128 Q 110 128 110 129 Q 110 128 111 128 Q 113 128 112 130 Z" fill="#c8a866"/>
-        </g>
-        <!-- Wick -->
-        <line x1="110" y1="88" x2="110" y2="82" stroke="#3d2f22" stroke-width="1"/>
-      </g>
-
-      <!-- FLAME -->
-      <g class="l-flame">
-        <ellipse cx="110" cy="76" rx="8" ry="12" fill="#f5d989" opacity="0.5"/>
-        <path d="M 110 64 Q 104 74 104 82 Q 104 88 110 88 Q 116 88 116 82 Q 116 74 110 64 Z" fill="#f0c674"/>
-        <path d="M 110 72 Q 107 78 107 82 Q 107 85 110 85 Q 113 85 113 82 Q 113 78 110 72 Z" fill="#fde8b3"/>
-      </g>
-
-      <!-- "Mum Işığı" script -->
-      <text class="l-script" x="110" y="178" text-anchor="middle"
-            font-family="Allura, cursive" font-size="32" fill="#c8a866">Mum Işığı</text>
-
-      <!-- "ATÖLYESİ" -->
-      <text class="l-atolyesi" x="110" y="200" text-anchor="middle"
-            font-family="Cormorant Garamond, serif" font-size="9"
-            fill="#5a4632" letter-spacing="4">ATÖLYESİ</text>
-    </svg>
+    <img src="logo-seffaf.png" alt="Mum Işığı Atölyesi" class="hero-logo-img">
   </div>
 
   <div class="hero-eyebrow">— El yapımı · Küçük üretim · Türkiye —</div>
@@ -1221,36 +1330,36 @@
   </div>
 
   <div class="grid">
-    <!-- CARD 1 -->
+    <!-- CARD 1: Karşılaşma (gül buketi - kız arkadaşının ana ürünü) -->
     <a class="card clickable reveal reveal-delay-1" href="urun-karsilasma.html" style="text-decoration:none;color:inherit;">
       <div class="card-num">— 01 —</div>
-      <div class="card-img" style="background-image:url('kirmizi-gul-1.jpg');background-size:cover;background-position:center;">
+      <div class="card-img" style="background-image:url('gul-buketi-1.jpg');background-size:cover;background-position:center;">
         <div class="card-hover-hint">✦ Detayları gör</div>
       </div>
       <h3 class="card-name">Karşılaşma</h3>
-      <div class="card-scent">Gül · Sandal · Misk</div>
+      <div class="card-scent">Bir gül buketi · El yapımı</div>
       <div class="card-price" style="color:var(--gold);border-bottom:1px solid var(--gold);display:inline-block;padding-bottom:3px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;font-family:'Inter',sans-serif;">İletişime Geç →</div>
     </a>
 
-    <!-- CARD 2 -->
-    <a class="card clickable reveal reveal-delay-2" href="urun-sis.html" style="text-decoration:none;color:inherit;">
+    <!-- CARD 2: Gece (siyah dalgalı, heykel mum) -->
+    <a class="card clickable reveal reveal-delay-2" href="urun-gece.html" style="text-decoration:none;color:inherit;">
       <div class="card-num">— 02 —</div>
-      <div class="card-img" style="background-image:url('gri-spiral-1.jpg');background-size:cover;background-position:center;">
+      <div class="card-img" style="background-image:url('gece-1.jpg');background-size:cover;background-position:center;">
         <div class="card-hover-hint">✦ Detayları gör</div>
       </div>
-      <h3 class="card-name">Sis</h3>
-      <div class="card-scent">Sandal Ağacı · Amber · Tütsü</div>
+      <h3 class="card-name">Gece</h3>
+      <div class="card-scent">Tütsü · Oud · Vetiver</div>
       <div class="card-price" style="color:var(--gold);border-bottom:1px solid var(--gold);display:inline-block;padding-bottom:3px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;font-family:'Inter',sans-serif;">İletişime Geç →</div>
     </a>
 
-    <!-- CARD 3 -->
-    <a class="card clickable reveal reveal-delay-3" href="urun-akdeniz.html" style="text-decoration:none;color:inherit;">
+    <!-- CARD 3: Sessiz Üçlü (Model 5 set) -->
+    <a class="card clickable reveal reveal-delay-3" href="urun-model5.html" style="text-decoration:none;color:inherit;">
       <div class="card-num">— 03 —</div>
-      <div class="card-img" style="background-image:url('deniz-kabugu-1.jpg');background-size:cover;background-position:center;">
+      <div class="card-img" style="background-image:url('model-5-1.jpg');background-size:cover;background-position:center;">
         <div class="card-hover-hint">✦ Detayları gör</div>
       </div>
-      <h3 class="card-name">Akdeniz</h3>
-      <div class="card-scent">Portakal Çiçeği · Defne · Deniz Tuzu</div>
+      <h3 class="card-name">Sessiz Üçlü</h3>
+      <div class="card-scent">Sandal · Amber · Çam</div>
       <div class="card-price" style="color:var(--gold);border-bottom:1px solid var(--gold);display:inline-block;padding-bottom:3px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;font-family:'Inter',sans-serif;">İletişime Geç →</div>
     </a>
   </div>
@@ -1380,7 +1489,7 @@
     <a href="https://wa.me/905462322939?text=Merhaba,%20Mum%20Işığı%20Atölyesi'nden%20bilgi%20almak%20istiyorum." class="foot-ig" target="_blank" rel="noopener">✦ WhatsApp · 0546 232 29 39</a>
     <a href="https://instagram.com/mumisigi.atolye" class="foot-ig" target="_blank" rel="noopener">◆ @mumisigi.atolye</a>
   </div>
-  <div class="foot-meta">© 2026 · El yapımı, Türkiye · mumisigiatolyesi.com</div>
+  <div class="foot-meta">© 2026 · El yapımı, Türkiye · mumisigiatolyesi.com.tr</div>
 </footer>
 
 <script>
@@ -1410,8 +1519,7 @@
     
     modal.classList.add('show');
     
-    // Video varsa onu göster, yoksa placeholder
-    // Video dosyası eklendiğinde otomatik algılanır
+    // Video varsa onu göster ve oynat; yoksa placeholder
     video.addEventListener('error', () => {
       video.style.display = 'none';
       placeholder.style.display = 'flex';
@@ -1420,10 +1528,34 @@
     video.addEventListener('loadeddata', () => {
       video.style.display = 'block';
       placeholder.style.display = 'none';
-      video.play();
+      // Autoplay (browser politikası gerekiyorsa sesli oynamayacak, sessiz başlayıp tıklamayla seslenir)
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Autoplay engellendi, kullanıcı tıklayarak başlatacak
+          video.controls = true;
+        });
+      }
+    }, { once: true });
+
+    // 🎬 Video bittiğinde sinematik geçişe başla
+    video.addEventListener('ended', () => {
+      modal.classList.add('fading-out');
+      setTimeout(() => {
+        modal.classList.remove('show');
+        modal.classList.remove('fading-out');
+        video.pause();
+        // Video logoyla bitti → bridge'de logo statik kalır
+        startCinematicBridge();
+      }, 600);
     }, { once: true });
     
-    // Try to load - if fails, placeholder shows
+    // Kullanıcı videonun üzerine tıklarsa pause/play toggle (cinematic feel)
+    video.addEventListener('click', () => {
+      if (video.paused) video.play();
+      else video.pause();
+    });
+    
     video.load();
   }
 
@@ -1432,6 +1564,57 @@
     const video = document.getElementById('introVideo');
     modal.classList.remove('show');
     video.pause();
+  }
+
+  // ============ CINEMATIC BRIDGE ============
+  // Video bittikten sonra: video logoyla bitiyor → splash logosu büyür/devam eder
+  // Video'nun son karesi (logo) ile splash logo aynı görüntü, smooth handoff
+  function startCinematicBridge() {
+    const bridge = document.getElementById('cinematicBridge');
+    const particles = document.getElementById('cbParticles');
+    
+    // Splash'i gizle
+    const splash = document.getElementById('splash');
+    if (splash) splash.style.display = 'none';
+    
+    // Bridge'i aktif et
+    bridge.classList.add('active');
+    
+    // Yükselen altın parçacıklar (logo etrafından)
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.className = 'cb-particle';
+      const drift = (Math.random() - 0.5) * 500;
+      const delay = 1.8 + Math.random() * 2;
+      const size = 2 + Math.random() * 3;
+      p.style.setProperty('--drift', drift + 'px');
+      p.style.animationDelay = delay + 's';
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      particles.appendChild(p);
+    }
+    
+    // 10 saniye sonra otomatik geç
+    setTimeout(() => {
+      if (bridge.classList.contains('active')) {
+        finishBridgeAndEnter();
+      }
+    }, 10000);
+  }
+
+  function finishBridgeAndEnter() {
+    const bridge = document.getElementById('cinematicBridge');
+    bridge.style.transition = 'opacity 1.2s ease';
+    bridge.style.opacity = '0';
+    
+    document.body.classList.remove('splash-active');
+    
+    setTimeout(() => {
+      bridge.remove();
+      // Hero animasyonunu başlat
+      const hero = document.getElementById('hero');
+      if (hero) hero.classList.add('animate-in');
+    }, 1200);
   }
 
   // Splash'i herhangi bir yere tıklayarak da geç
