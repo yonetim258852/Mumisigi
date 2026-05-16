@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hikaye — Mum Işığı Atölyesi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --cream: #faf6ee; --cream-deep: #ede5d4; --gold: #b8945a;
+    --gold-bright: #c8a866; --gold-glow: #e8a447; --sage: #9eab8a;
+    --dark: #3d2f22; --mid: #6b5847; --soft: #8a7a68;
+  }
+  body { background: #1a1410; font-family: 'Inter', sans-serif; color: var(--cream); overflow-x: hidden; line-height: 1.7; transition: background 2s ease; }
+
+  /* Cursor */
+  .cursor-flame { position: fixed; width: 24px; height: 24px; pointer-events: none; z-index: 9999; transition: transform 0.1s ease, opacity 0.3s ease; opacity: 0; }
+  @media (hover: hover) { .cursor-flame { opacity: 1; } body { cursor: none; } a, button, .clickable { cursor: none; } }
+
+  /* Sticky candle on side */
+  .sticky-candle {
+    position: fixed;
+    top: 50%; left: 60px;
+    transform: translateY(-50%);
+    width: 110px;
+    z-index: 50;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+  .sticky-candle svg { width: 100%; }
+  .sc-flame { opacity: 0; transform-origin: center bottom; transform: scale(0); transition: opacity 0.8s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .sc-flame.lit { opacity: 1; transform: scale(1); animation: flicker 2.5s ease-in-out 0.5s infinite; }
+  .sc-glow { opacity: 0; transition: opacity 1.5s ease; }
+  .sc-glow.lit { opacity: 1; animation: glowPulse 4s ease-in-out infinite; }
+  @keyframes glowPulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+  @keyframes flicker { 0%, 100% { transform: scale(1) rotate(0); } 25% { transform: scale(1.05, 0.95) rotate(-1deg); } 50% { transform: scale(0.97, 1.05) rotate(1deg); } 75% { transform: scale(1.03, 0.98) rotate(-0.5deg); } }
+
+  /* NAV - special for this dark page */
+  nav { position: fixed; top: 0; left: 0; right: 0; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(26, 20, 16, 0.6); backdrop-filter: blur(12px); transition: all 0.5s ease; }
+  body.bright nav { background: rgba(250, 246, 238, 0.9); }
+  .nav-brand { font-family: 'Allura', cursive; font-size: 28px; color: var(--gold); text-decoration: none; transition: color 0.5s; }
+  .nav-links { display: flex; gap: 32px; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; }
+  .nav-links a { text-decoration: none; color: rgba(250, 246, 238, 0.7); transition: color 0.3s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a.active { color: var(--gold); }
+  body.bright .nav-links a { color: var(--mid); }
+  body.bright .nav-links a.active { color: var(--gold); }
+
+  /* HERO - dark, mysterious */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 40px;
+    position: relative;
+    text-align: center;
+  }
+  .hero-spark {
+    width: 12px; height: 12px;
+    background: var(--gold-glow);
+    border-radius: 50%;
+    box-shadow: 0 0 20px var(--gold-glow), 0 0 40px var(--gold-glow);
+    margin-bottom: 60px;
+    animation: spark 3s ease-in-out infinite;
+  }
+  @keyframes spark { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.8; } }
+  .hero-eyebrow { font-size: 11px; color: var(--gold); letter-spacing: 5px; text-transform: uppercase; margin-bottom: 24px; }
+  .hero-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 100px; font-weight: 300; line-height: 1; letter-spacing: -2px; margin-bottom: 28px; }
+  .hero-title em { color: var(--gold); }
+  .hero-sub { font-size: 15px; color: rgba(250, 246, 238, 0.7); max-width: 480px; line-height: 1.95; }
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: scrollBounce 2s ease-in-out infinite;
+  }
+  @keyframes scrollBounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+
+  /* CHAPTER blocks - alternating dark to bright */
+  .chapter {
+    min-height: 90vh;
+    padding: 100px 60px 100px 240px;
+    display: flex; align-items: center;
+    position: relative;
+  }
+  .chapter-inner { max-width: 680px; }
+  .chapter-num { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; color: var(--gold); letter-spacing: 4px; margin-bottom: 24px; }
+  .chapter-h { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 64px; font-weight: 300; line-height: 1.1; margin-bottom: 36px; letter-spacing: -1px; transition: color 1s ease; }
+  .chapter-h em { color: var(--gold); }
+  .chapter-p { font-size: 16px; line-height: 2; color: rgba(250, 246, 238, 0.75); margin-bottom: 22px; transition: color 1s ease; max-width: 580px; }
+  .chapter-p:last-child { margin-bottom: 0; }
+
+  body.bright .chapter-h { color: var(--dark); }
+  body.bright .chapter-p { color: var(--mid); }
+
+  /* Decorative line */
+  .chapter-line { width: 60px; height: 1px; background: var(--gold); margin-bottom: 36px; }
+
+  /* PULL QUOTE - big text moments */
+  .pullquote {
+    padding: 140px 60px;
+    text-align: center;
+  }
+  .pq-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 56px;
+    font-weight: 300;
+    line-height: 1.3;
+    max-width: 900px;
+    margin: 0 auto 32px;
+    letter-spacing: -0.5px;
+    transition: color 1s ease;
+  }
+  .pq-text em { color: var(--gold); }
+  body.bright .pq-text { color: var(--dark); }
+
+  .pq-attr { font-size: 11px; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; }
+
+  /* PRINCIPLES section - bright */
+  .principles {
+    padding: 140px 60px;
+    background: var(--cream);
+    color: var(--dark);
+    text-align: center;
+  }
+  .pr-eyebrow { font-size: 11px; color: var(--gold); letter-spacing: 5px; text-transform: uppercase; margin-bottom: 18px; }
+  .pr-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 56px; font-weight: 300; line-height: 1.1; margin-bottom: 70px; letter-spacing: -0.8px; color: var(--dark); }
+  .pr-title em { color: var(--gold); }
+
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .principle {
+    text-align: left;
+    padding-left: 24px;
+    border-left: 1px solid rgba(184, 148, 90, 0.3);
+  }
+  .principle-num { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 32px; color: var(--gold); margin-bottom: 16px; }
+  .principle-name { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 24px; color: var(--dark); margin-bottom: 14px; font-weight: 400; }
+  .principle-desc { font-size: 14px; color: var(--mid); line-height: 1.9; }
+
+  /* CTA section */
+  .cta-section {
+    padding: 140px 40px;
+    background: var(--cream-deep);
+    text-align: center;
+    color: var(--dark);
+  }
+  .cta-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 48px; font-weight: 300; margin-bottom: 24px; letter-spacing: -0.5px; }
+  .cta-title em { color: var(--gold); }
+  .cta-p { font-size: 15px; color: var(--mid); max-width: 480px; margin: 0 auto 36px; line-height: 1.9; }
+  .cta-btn { display: inline-block; background: var(--dark); color: var(--cream); padding: 16px 36px; border-radius: 999px; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; text-decoration: none; transition: all 0.3s; }
+  .cta-btn:hover { background: var(--gold); transform: translateY(-2px); }
+
+  /* FOOTER */
+  footer { padding: 80px 40px 40px; background: var(--cream-deep); text-align: center; color: var(--dark); }
+  .foot-wordmark { font-family: 'Allura', cursive; font-size: 40px; color: var(--gold); margin-bottom: 6px; }
+  .foot-sub { font-family: 'Cormorant Garamond', serif; font-size: 12px; letter-spacing: 6px; color: var(--mid); margin-bottom: 28px; }
+  .foot-ig { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; padding: 14px 28px; border: 1px solid var(--gold); border-radius: 999px; color: var(--dark); text-decoration: none; transition: all 0.3s; }
+  .foot-ig:hover { background: var(--gold); color: var(--cream); }
+  .foot-meta { font-size: 10px; color: var(--soft); letter-spacing: 3px; text-transform: uppercase; margin-top: 40px; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1.2s ease, transform 1.2s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .sticky-candle { width: 60px; left: 16px; }
+    nav { padding: 16px 20px; } .nav-links { gap: 14px; font-size: 9px; } .nav-brand { font-size: 22px; }
+    .hero { padding: 30px 20px; } .hero-title { font-size: 48px; }
+    .chapter { padding: 70px 20px 70px 90px; min-height: auto; }
+    .chapter-h { font-size: 36px; }
+    .chapter-p { font-size: 14px; }
+    .pullquote { padding: 80px 20px; }
+    .pq-text { font-size: 32px; }
+    .principles { padding: 70px 20px; } .pr-title { font-size: 36px; margin-bottom: 50px; }
+    .principles-grid { grid-template-columns: 1fr; gap: 40px; }
+    .cta-section { padding: 70px 20px; } .cta-title { font-size: 32px; }
+    .cursor-flame { display: none; } body { cursor: auto; }
+  }
+</style>
+</head>
+<body id="body">
+
+<div class="cursor-flame" id="cursorFlame">
+  <svg viewBox="0 0 20 20"><ellipse cx="10" cy="10" rx="5" ry="8" fill="#e8a447" opacity="0.6"/><ellipse cx="10" cy="11" rx="2.5" ry="5" fill="#fde8b3"/></svg>
+</div>
+
+<!-- Sticky candle (grows brighter as you scroll) -->
+<div class="sticky-candle">
+  <svg viewBox="0 0 110 160">
+    <!-- Glow -->
+    <ellipse class="sc-glow" cx="55" cy="30" rx="50" ry="40" fill="#e8a447" opacity="0.5"/>
+    <!-- Jar -->
+    <path d="M 25 60 Q 25 53 32 53 L 78 53 Q 85 53 85 60 L 85 150 Q 85 154 82 154 L 28 154 Q 25 154 25 150 Z" fill="rgba(250, 246, 238, 0.92)" stroke="#b8945a" stroke-width="1.2"/>
+    <line x1="55" y1="53" x2="55" y2="44" stroke="#3d2f22" stroke-width="1.5"/>
+    <!-- Flame -->
+    <g class="sc-flame">
+      <ellipse cx="55" cy="32" rx="9" ry="13" fill="#f5d989" opacity="0.55"/>
+      <path d="M 55 18 Q 49 30 49 40 Q 49 46 55 46 Q 61 46 61 40 Q 61 30 55 18 Z" fill="#f0c674"/>
+      <path d="M 55 26 Q 52 33 52 40 Q 52 43 55 43 Q 58 43 58 40 Q 58 33 55 26 Z" fill="#fde8b3"/>
+    </g>
+  </svg>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-brand">Mum Işığı</a>
+  <div class="nav-links">
+    <a href="koleksiyon.html">Koleksiyon</a>
+    <a href="hikaye.html" class="active">Hikaye</a>
+    <a href="gunluk.html">Atölye Günlüğü</a>
+    <a href="iletisim.html">İletişim</a>
+  </div>
+</nav>
+
+<!-- HERO - dark, single spark -->
+<section class="hero">
+  <div class="hero-spark"></div>
+  <div class="hero-eyebrow">— Hikayemiz —</div>
+  <h1 class="hero-title">Karanlıktan<br/><em>aydınlığa.</em></h1>
+  <p class="hero-sub">Her büyük umut, küçük bir kıvılcımla başlar. Bu sayfa da bir kıvılcımla başlıyor. Aşağı kaydır.</p>
+  <div class="scroll-hint">↓ Hikayeyi takip et</div>
+</section>
+
+<!-- CHAPTER 1 - still dark -->
+<section class="chapter reveal" id="ch1">
+  <div class="chapter-inner">
+    <div class="chapter-num">— I. Bölüm —</div>
+    <div class="chapter-line"></div>
+    <h2 class="chapter-h">İlk <em>kıvılcım</em>.</h2>
+    <p class="chapter-p">Bazı dönemler vardır — sessiz, uzun, ne yapacağını bilemediğin. Hayatın bir köşesinde duruyorsun; eski olan bitmiş, yeni olan henüz başlamamış.</p>
+    <p class="chapter-p">Mum Işığı Atölyesi de böyle bir köşede doğdu. Zor bir geçişin ortasında, küçük bir tezgâhın üzerinde, ilk soya mumu döküldü. Hesabı yapılmamıştı. Plan yoktu. Sadece ellerin bir şey yapma ihtiyacı, ve bir kavanozun içine sığacak kadar küçük bir umut vardı.</p>
+  </div>
+</section>
+
+<!-- CHAPTER 2 - getting brighter -->
+<section class="chapter reveal" id="ch2">
+  <div class="chapter-inner">
+    <div class="chapter-num">— II. Bölüm —</div>
+    <div class="chapter-line"></div>
+    <h2 class="chapter-h">Bir mum, <em>sadece bir mum</em> değildir.</h2>
+    <p class="chapter-p">Mum yapmayı öğrenmek aslında sabır öğrenmektir. Mum acele edilmez — eridiği zamanda erir, soğuduğu zamanda soğur, dinlendiği gün dinlenir.</p>
+    <p class="chapter-p">Her gün bir mum daha. Sonra bir tane daha. Vanilya, lavanta, sandal ağacı. İsimler eklendi: Pazar Sabahı, Geç Saat, İlk Kar. Her birinin bir hikayesi, bir anısı, bir saati oldu.</p>
+    <p class="chapter-p">Bir tezgâh, küçük bir oda, bir kitap kadar yer kaplayan bir atölye — yeterliydi.</p>
+  </div>
+</section>
+
+<!-- PULL QUOTE 1 -->
+<section class="pullquote reveal">
+  <p class="pq-text">"Bazen tek bir ışık, karanlığı yenmek için yeterli <em>bir umuttur.</em>"</p>
+  <div class="pq-attr">— Mum Işığı Atölyesi Vizyon Bildirisi</div>
+</section>
+
+<!-- CHAPTER 3 -->
+<section class="chapter reveal" id="ch3">
+  <div class="chapter-inner">
+    <div class="chapter-num">— III. Bölüm —</div>
+    <div class="chapter-line"></div>
+    <h2 class="chapter-h">İlk <em>müşteri</em>.</h2>
+    <p class="chapter-p">Instagram'da bir hesap açıldı. İlk fotoğraf yüklendi. Birkaç ay kimse fark etmedi. Sonra bir gün, bir tanıdık bir mum sipariş etti. "Annene hediye olsun" dedi.</p>
+    <p class="chapter-p">O ilk paket kargoya verildiğinde, atölyede ne bir tören vardı ne de fanfar. Sadece sessiz bir tatmin: birisi, bizim ellerimizden çıkan bir şeyi, kendi evine taşıyordu.</p>
+    <p class="chapter-p">Aydınlığa giden yol böyle başladı.</p>
+  </div>
+</section>
+
+<!-- CHAPTER 4 -->
+<section class="chapter reveal" id="ch4">
+  <div class="chapter-inner">
+    <div class="chapter-num">— IV. Bölüm —</div>
+    <div class="chapter-line"></div>
+    <h2 class="chapter-h">Bugün <em>burada</em>.</h2>
+    <p class="chapter-p">Bugün hâlâ aynı tezgâhtayız. Mumlar hâlâ tek tek dökülüyor. Etiketler hâlâ elle yapıştırılıyor. Her kargoya küçük bir not ekleniyor — çünkü her sipariş hâlâ bir tanıdık gibi geliyor.</p>
+    <p class="chapter-p">Bu sayfayı okuyorsan, sen de bu hikayenin bir parçasısın. Yaktığın bir mum, başkasının karanlığını da aydınlatabilir.</p>
+  </div>
+</section>
+
+<!-- PRINCIPLES - bright section -->
+<section class="principles">
+  <div class="pr-eyebrow">— Atölye İlkeleri —</div>
+  <h2 class="pr-title">Neye <em>inanıyoruz</em>?</h2>
+
+  <div class="principles-grid">
+    <div class="principle">
+      <div class="principle-num">01</div>
+      <h3 class="principle-name">Yavaşlık bir lüks değil</h3>
+      <p class="principle-desc">Mum hızlı yapılmaz. Acele edilirse fitil yamulur, koku yetişmez, parafin kabuk yapar. Biz aceleye değil, düzgün olana inanırız.</p>
+    </div>
+
+    <div class="principle">
+      <div class="principle-num">02</div>
+      <h3 class="principle-name">El emeği bir maliyet değil</h3>
+      <p class="principle-desc">Her mumu tek tek dökmek bize daha pahalıya patlıyor — biliyoruz. Ama makine eli yerine geçemez. Aldığın mum, başka bir insanın ellerinden geçti.</p>
+    </div>
+
+    <div class="principle">
+      <div class="principle-num">03</div>
+      <h3 class="principle-name">Doğa bir tercih değil</h3>
+      <p class="principle-desc">%100 doğal soya mumu, kurşunsuz pamuk fitil, esansiyel yağlar. Parafin kullanmıyoruz çünkü evine girecek bir şeyin temiz olması gerektiğini düşünüyoruz.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="cta-title">Hikayemizin bir <em>parçası</em> olmak ister misin?</h2>
+  <p class="cta-p">Atölyemizden yeni haberler, sınırlı üretimler ve aralarda küçük notlar için Instagram'da bizi takip edebilirsin.</p>
+  <a href="koleksiyon.html" class="cta-btn">Koleksiyonu Keşfet →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-wordmark">Mum Işığı</div>
+  <div class="foot-sub">A T Ö L Y E S İ</div>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <a href="https://wa.me/905462322939?text=Merhaba,%20Mum%20Işığı%20Atölyesi'nden%20bilgi%20almak%20istiyorum." class="foot-ig" target="_blank" rel="noopener" style="background:transparent;">✦ WhatsApp · 0546 232 29 39</a>
+    <a href="https://instagram.com/mumisigiatolyesi" class="foot-ig" target="_blank" rel="noopener">◆ @mumisigiatolyesi</a>
+  </div>
+  <div class="foot-meta">© 2026 · El yapımı, Türkiye · mumisigiatolyesi.com</div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursorFlame');
+  document.addEventListener('mousemove', (e) => { cursor.style.transform = `translate(${e.clientX - 12}px, ${e.clientY - 12}px)`; });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Sticky candle progressive lighting based on scroll
+  const flame = document.querySelector('.sc-flame');
+  const glow = document.querySelector('.sc-glow');
+  const body = document.body;
+  let isLit = false;
+  let isBright = false;
+
+  function checkScroll() {
+    const scrolled = window.scrollY;
+    const docHeight = document.body.scrollHeight - window.innerHeight;
+    const progress = scrolled / docHeight;
+
+    // Light the candle once user scrolls past hero (~30%)
+    if (progress > 0.18 && !isLit) {
+      flame.classList.add('lit');
+      glow.classList.add('lit');
+      isLit = true;
+    }
+
+    // Body color shifts from dark to bright as you scroll
+    if (progress < 0.5) {
+      // Dark phase: 0 → 50% = #1a1410 → #2a1f17
+      const t = progress / 0.5;
+      const r = Math.round(26 + (42 - 26) * t);
+      const g = Math.round(20 + (31 - 20) * t);
+      const b = Math.round(16 + (23 - 16) * t);
+      body.style.background = `rgb(${r},${g},${b})`;
+      body.classList.remove('bright');
+      isBright = false;
+    } else {
+      // Bright phase: at 50% snap to cream
+      if (!isBright) {
+        body.style.background = '';
+        body.classList.add('bright');
+        body.style.background = 'var(--cream)';
+        body.style.color = 'var(--dark)';
+        isBright = true;
+      }
+    }
+  }
+
+  window.addEventListener('scroll', checkScroll);
+  checkScroll();
+</script>
+
+
+<!-- Floating Quick Contact Buttons -->
+<style>
+  .fab-wrap { position: fixed; bottom: 24px; right: 24px; z-index: 998; display: flex; flex-direction: column; gap: 12px; }
+  .fab { width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; box-shadow: 0 6px 20px rgba(60,40,20,0.25); transition: all 0.3s ease; cursor: pointer; }
+  .fab:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 10px 28px rgba(60,40,20,0.35); }
+  .fab-wa { background: #25D366; }
+  .fab-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+  .fab svg { width: 28px; height: 28px; fill: white; }
+  .fab-label { position: absolute; right: 64px; top: 50%; transform: translateY(-50%); background: rgba(61,47,34,0.95); color: #faf6ee; padding: 8px 14px; border-radius: 6px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+  .fab:hover .fab-label { opacity: 1; }
+  @media (max-width: 768px) { .fab-wrap { bottom: 16px; right: 16px; gap: 10px; } .fab { width: 48px; height: 48px; } .fab svg { width: 24px; height: 24px; } .fab-label { display: none; } }
+</style>
+<div class="fab-wrap">
+  <a href="https://wa.me/905462322939?text=Merhaba,%20Mum%20Işığı%20Atölyesi'nden%20bilgi%20almak%20istiyorum." class="fab fab-wa" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <span class="fab-label">WhatsApp ile yaz</span>
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+  <a href="https://instagram.com/mumisigiatolyesi" class="fab fab-ig" target="_blank" rel="noopener" aria-label="Instagram">
+    <span class="fab-label">Instagram'da takip et</span>
+    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+  </a>
+</div>
+
+</body>
+</html>
