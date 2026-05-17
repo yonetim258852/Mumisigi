@@ -31,8 +31,7 @@
   }
 
   /* ============ SPLASH INTRO SCREEN ============ */
-  body.splash-active { overflow: hidden; }
-  body.splash-active .hero { opacity: 0; }
+  body { background: var(--cream); }
 
   .splash {
     position: fixed;
@@ -466,18 +465,18 @@
 
   /* ============ HERO ============ */
   .hero {
-    min-height: 100vh;
+    min-height: auto;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    padding: 100px 40px 40px;
+    padding: 80px 40px 50px;
     position: relative;
     text-align: center;
   }
 
   /* Hero logo container - watercolor logo */
   .hero-logo {
-    width: 320px; height: 320px;
-    margin-bottom: 30px;
+    width: 240px; height: 240px;
+    margin-bottom: 20px;
     position: relative;
     opacity: 0;
     transform: scale(0.92);
@@ -572,6 +571,14 @@
     animation: fadeUp 0.8s ease 2.9s forwards;
   }
 
+  .hero-nav-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 4px;
+  }
+
   .hero-cta {
     display: inline-block;
     background: var(--dark);
@@ -582,7 +589,7 @@
     letter-spacing: 3px;
     text-transform: uppercase;
     text-decoration: none;
-    border: none;
+    border: 1px solid var(--dark);
     cursor: pointer;
     transition: all 0.3s;
     opacity: 0;
@@ -590,7 +597,7 @@
     position: relative;
     overflow: hidden;
   }
-  .hero-cta:hover { background: var(--gold); transform: translateY(-2px); }
+  .hero-cta:hover { background: var(--gold); border-color: var(--gold); transform: translateY(-2px); }
   .hero-cta::after {
     content: '';
     position: absolute;
@@ -600,6 +607,19 @@
     transition: left 0.6s ease;
   }
   .hero-cta:hover::after { left: 100%; }
+
+  /* Ghost (secondary) CTA */
+  .hero-cta-ghost {
+    background: transparent;
+    color: var(--dark);
+    border: 1px solid rgba(61, 47, 34, 0.3);
+    animation-delay: 3.4s;
+  }
+  .hero-cta-ghost:hover {
+    background: transparent;
+    border-color: var(--gold);
+    color: var(--gold);
+  }
 
   .scroll-hint {
     position: absolute;
@@ -1085,15 +1105,208 @@
   .reveal-delay-2 { transition-delay: 0.2s; }
   .reveal-delay-3 { transition-delay: 0.3s; }
 
+  /* ============ ATÖLYE GÜNLÜĞÜ ÖZETİ ============ */
+  .gunluk-preview {
+    padding: 100px 40px;
+    background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
+    text-align: center;
+  }
+  .gunluk-preview-head {
+    max-width: 700px;
+    margin: 0 auto 60px;
+  }
+  .gunluk-eyebrow {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .gunluk-h {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    line-height: 1.1;
+    color: var(--dark);
+    font-weight: 300;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+  .gunluk-h em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .gunluk-sub {
+    color: var(--sage);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .gunluk-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    max-width: 1100px;
+    margin: 0 auto 50px;
+  }
+  .gunluk-card {
+    background: var(--cream);
+    padding: 18px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: inherit;
+    transform: rotate(var(--rot, 0deg));
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    box-shadow: 0 8px 24px rgba(60, 40, 20, 0.08);
+    display: block;
+    text-align: left;
+  }
+  .gunluk-card:hover {
+    transform: rotate(0deg) translateY(-6px);
+    box-shadow: 0 16px 40px rgba(60, 40, 20, 0.15);
+  }
+  .gunluk-card-img {
+    aspect-ratio: 4/3;
+    background-color: var(--cream-deep);
+    border-radius: 2px;
+    margin-bottom: 18px;
+  }
+  .gunluk-card-date {
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .gunluk-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--dark);
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+  .gunluk-card-excerpt {
+    font-size: 13px;
+    color: var(--sage);
+    line-height: 1.5;
+  }
+  .gunluk-cta {
+    display: inline-block;
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 4px;
+    transition: all 0.3s ease;
+  }
+  .gunluk-cta:hover {
+    color: var(--dark);
+    border-color: var(--dark);
+  }
+
+  /* ============ İLETİŞİM ÇAĞRISI ============ */
+  .contact-cta {
+    padding: 120px 40px;
+    background: var(--dark);
+    color: var(--cream);
+    text-align: center;
+  }
+  .contact-eyebrow {
+    font-size: 11px;
+    color: var(--gold-bright);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .contact-h {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px;
+    line-height: 1.1;
+    color: var(--cream);
+    font-weight: 300;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+  .contact-h em {
+    font-style: italic;
+    color: var(--gold-bright);
+  }
+  .contact-sub {
+    color: rgba(250, 246, 238, 0.7);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 600px;
+    margin: 0 auto 40px;
+  }
+  .contact-buttons {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 28px;
+    border-radius: 999px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+  .contact-btn-wa {
+    background: #25D366;
+    color: white;
+  }
+  .contact-btn-wa:hover {
+    background: #1ebd5b;
+    transform: translateY(-2px);
+  }
+  .contact-btn-ig {
+    background: linear-gradient(45deg, #f09433 0%, #dc2743 50%, #bc1888 100%);
+    color: white;
+  }
+  .contact-btn-ig:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(220, 39, 67, 0.3);
+  }
+  .contact-btn-form {
+    background: transparent;
+    color: var(--cream);
+    border-color: rgba(250, 246, 238, 0.3);
+  }
+  .contact-btn-form:hover {
+    border-color: var(--gold-bright);
+    color: var(--gold-bright);
+  }
+
+  /* Mobile için Günlük + Contact responsive */
+  @media (max-width: 768px) {
+    .gunluk-preview { padding: 70px 20px; }
+    .gunluk-h { font-size: 32px; }
+    .gunluk-grid { grid-template-columns: 1fr; gap: 30px; }
+    .gunluk-card { transform: rotate(0deg) !important; }
+    .contact-cta { padding: 80px 20px; }
+    .contact-h { font-size: 36px; }
+    .contact-buttons { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
+    .contact-btn { width: 100%; justify-content: center; box-sizing: border-box; }
+  }
+
   /* Mobile */
   @media (max-width: 768px) {
     nav { padding: 16px 20px; }
     .nav-links { gap: 14px; font-size: 9px; }
     .nav-brand { font-size: 22px; }
-    .hero { padding: 100px 20px 40px; }
-    .hero-logo { width: 220px; height: 220px; margin-bottom: 20px; }
+    .hero { padding: 70px 20px 40px; }
+    .hero-logo { width: 180px; height: 180px; margin-bottom: 16px; }
     .hero-title { font-size: 38px; }
     .hero-sub { font-size: 14px; }
+    .hero-nav-buttons { flex-direction: column; gap: 10px; width: 100%; max-width: 280px; }
+    .hero-cta { width: 100%; box-sizing: border-box; text-align: center; }
     .banner { padding: 80px 20px; }
     .banner-h { font-size: 56px; letter-spacing: -1px; }
     .collection { padding: 70px 20px; }
@@ -1178,8 +1391,9 @@
 
 <!-- NAV -->
 <nav id="nav">
-  <div class="nav-brand">Mum Işığı</div>
+  <a href="atolye.html" class="nav-brand" style="text-decoration:none;color:inherit;">Mum Işığı</a>
   <div class="nav-links">
+    <a href="atolye.html"><span>Atölye</span></a>
     <a href="koleksiyon.html"><span>Koleksiyon</span></a>
     <a href="hikaye.html"><span>Hikaye</span></a>
     <a href="gunluk.html"><span>Atölye Günlüğü</span></a>
@@ -1194,7 +1408,7 @@
     <img src="logo.png" alt="Mum Işığı Atölyesi" class="hero-logo-img">
   </div>
 
-  <div class="hero-eyebrow">— El yapımı · Küçük üretim · Türkiye —</div>
+  <div class="hero-eyebrow">— Hoşgeldiniz —</div>
 
   <h1 class="hero-title">
     <span class="word">Sessizlikle</span>
@@ -1204,18 +1418,46 @@
   </h1>
 
   <p class="hero-sub">
-    Küçük bir atölyede, doğal soya mumundan, özenle seçilmiş kokularla — bir mumu döken kadar sabırlı bir dünyaya.
+    El yapımı, doğal soya mumlarımızı keşfedin. Aşağıdan koleksiyonumuza göz atabilir veya menüden hikayemize, atölye günlüğümüze ulaşabilirsiniz.
   </p>
 
-  <a href="#koleksiyon" class="hero-cta">Koleksiyonu Keşfet →</a>
+  <div class="hero-nav-buttons">
+    <a href="#koleksiyon" class="hero-cta">Koleksiyonu Keşfet →</a>
+    <a href="hikaye.html" class="hero-cta hero-cta-ghost">Hikayemiz</a>
+  </div>
 
   <div class="scroll-hint">↓ Aşağı kaydır</div>
 </section>
 
-<!-- ============ EDITORIAL BANNER ============ -->
-<section class="banner reveal">
-  <div class="banner-eyebrow">— Atölye Felsefesi —</div>
-  <h2 class="banner-h">Yavaş yapılan, <em>uzun yanan.</em></h2>
+<!-- ============ STORY ============ -->
+<section class="story reveal">
+  <div class="story-img">
+    <svg class="story-candle" viewBox="0 0 100 140">
+      <ellipse cx="50" cy="20" rx="20" ry="30" fill="#f5d989" opacity="0.3"/>
+      <path d="M 28 50 Q 28 45 33 45 L 67 45 Q 72 45 72 50 L 72 135 L 28 135 Z"
+            fill="rgba(255,250,235,0.85)" stroke="#b8945a" stroke-width="0.8"/>
+      <line x1="50" y1="45" x2="50" y2="38" stroke="#3d2f22" stroke-width="1.2"/>
+      <ellipse cx="50" cy="30" rx="6" ry="10" fill="#f5d989" opacity="0.6"/>
+      <path d="M 50 18 Q 46 28 46 36 Q 46 42 50 42 Q 54 42 54 36 Q 54 28 50 18 Z" fill="#f0c674">
+        <animateTransform attributeName="transform" type="scale"
+                          values="1,1; 1.05,0.95; 0.97,1.05; 1,1"
+                          dur="2.5s" repeatCount="indefinite"
+                          additive="sum"/>
+      </path>
+      <path d="M 50 26 Q 48 32 48 36 Q 48 39 50 39 Q 52 39 52 36 Q 52 32 50 26 Z" fill="#fde8b3"/>
+    </svg>
+  </div>
+  <div>
+    <div class="story-eyebrow">— Atölyeden —</div>
+    <h2 class="story-h">Karanlıktan <em>aydınlığa</em>, bir kıvılcımla.</h2>
+    <p class="story-p">
+      Mum Işığı Atölyesi, küçük bir tezgâhta, sessiz bir niyetle başladı. Her büyük umut, küçük bir kıvılcımla başlar — biz de bu inançla, her mumu tek tek dökmeyi, dinlendirmeyi, elle etiketlemeyi seçtik.
+    </p>
+    <p class="story-p" style="margin-top:-16px;">
+      Bir mumu yakmak, sadece bir odayı aydınlatmak değil; bir anıyı canlandırmaktır.
+    </p>
+    <a href="hikaye.html" class="story-link">Hikayemizi Oku →</a>
+  </div>
 </section>
 
 <!-- ============ ATMOSPHERIC HERO IMAGE ============ -->
@@ -1271,37 +1513,6 @@
   </div>
 </section>
 
-<!-- ============ STORY ============ -->
-<section class="story reveal">
-  <div class="story-img">
-    <svg class="story-candle" viewBox="0 0 100 140">
-      <ellipse cx="50" cy="20" rx="20" ry="30" fill="#f5d989" opacity="0.3"/>
-      <path d="M 28 50 Q 28 45 33 45 L 67 45 Q 72 45 72 50 L 72 135 L 28 135 Z"
-            fill="rgba(255,250,235,0.85)" stroke="#b8945a" stroke-width="0.8"/>
-      <line x1="50" y1="45" x2="50" y2="38" stroke="#3d2f22" stroke-width="1.2"/>
-      <ellipse cx="50" cy="30" rx="6" ry="10" fill="#f5d989" opacity="0.6"/>
-      <path d="M 50 18 Q 46 28 46 36 Q 46 42 50 42 Q 54 42 54 36 Q 54 28 50 18 Z" fill="#f0c674">
-        <animateTransform attributeName="transform" type="scale"
-                          values="1,1; 1.05,0.95; 0.97,1.05; 1,1"
-                          dur="2.5s" repeatCount="indefinite"
-                          additive="sum"/>
-      </path>
-      <path d="M 50 26 Q 48 32 48 36 Q 48 39 50 39 Q 52 39 52 36 Q 52 32 50 26 Z" fill="#fde8b3"/>
-    </svg>
-  </div>
-  <div>
-    <div class="story-eyebrow">— Atölyeden —</div>
-    <h2 class="story-h">Karanlıktan <em>aydınlığa</em>, bir kıvılcımla.</h2>
-    <p class="story-p">
-      Mum Işığı Atölyesi, küçük bir tezgâhta, sessiz bir niyetle başladı. Her büyük umut, küçük bir kıvılcımla başlar — biz de bu inançla, her mumu tek tek dökmeyi, dinlendirmeyi, elle etiketlemeyi seçtik.
-    </p>
-    <p class="story-p" style="margin-top:-16px;">
-      Bir mumu yakmak, sadece bir odayı aydınlatmak değil; bir anıyı canlandırmaktır.
-    </p>
-    <a href="#" class="story-link">Hikayemizi Oku →</a>
-  </div>
-</section>
-
 <!-- ============ VALUES ============ -->
 <section class="values reveal">
   <div class="values-eyebrow">— Temel Değerlerimiz —</div>
@@ -1340,44 +1551,62 @@
   </div>
 </section>
 
-<!-- ============ COMPARISON ============ -->
-<section class="compare reveal">
-  <div class="compare-inner">
-    <div class="compare-eyebrow">— Neden Mum Işığı —</div>
-    <h2 class="compare-h">Bir mum, <em style="color:var(--gold);font-style:italic">bir mum değildir.</em></h2>
+<!-- ============ ATÖLYE GÜNLÜĞÜ ÖZETİ ============ -->
+<section class="gunluk-preview reveal">
+  <div class="gunluk-preview-head">
+    <div class="gunluk-eyebrow">— Atölye Günlüğü —</div>
+    <h2 class="gunluk-h">Tezgâhın <em>arka yüzü.</em></h2>
+    <p class="gunluk-sub">Her hafta atölyeden küçük anlar, dökme günleri, yeni denemeler.</p>
+  </div>
 
-    <div class="compare-table">
-      <div class="compare-row header">
-        <div class="compare-cell">Özellik</div>
-        <div class="compare-cell">Endüstriyel Mumlar</div>
-        <div class="compare-cell">Mum Işığı Atölyesi</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell">Hammadde</div>
-        <div class="compare-cell">Parafin (petrol türevi)</div>
-        <div class="compare-cell">%100 Saf Soya Mumu</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell">Koku</div>
-        <div class="compare-cell">Sentetik ve yoğun</div>
-        <div class="compare-cell">Doğal esansiyel yağlar</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell">Yanma süresi</div>
-        <div class="compare-cell">Hızlı (20-30 saat)</div>
-        <div class="compare-cell">Uzun ömürlü (50+ saat)</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell">Çevresel etki</div>
-        <div class="compare-cell">Karbon salınımı yüksek</div>
-        <div class="compare-cell">Eco-friendly, biyo-bozunur</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell">Ruh ve tasarım</div>
-        <div class="compare-cell">Mekanik seri üretim</div>
-        <div class="compare-cell">Hikayesi olan el emeği</div>
-      </div>
-    </div>
+  <div class="gunluk-grid">
+    <a href="gunluk.html" class="gunluk-card" style="--rot:-2deg;">
+      <div class="gunluk-card-img" style="background-image:url('gul-buketi-1.jpg');background-size:cover;background-position:center;"></div>
+      <div class="gunluk-card-date">— Mart 2026 —</div>
+      <h3 class="gunluk-card-title">İlk gül buketimiz</h3>
+      <p class="gunluk-card-excerpt">Karşılaşma serisinin ilk numunesini bugün döktük...</p>
+    </a>
+
+    <a href="gunluk.html" class="gunluk-card" style="--rot:1.5deg;">
+      <div class="gunluk-card-img" style="background-image:url('gece-1.jpg');background-size:cover;background-position:center;"></div>
+      <div class="gunluk-card-date">— Şubat 2026 —</div>
+      <h3 class="gunluk-card-title">Gece kavramı üzerine</h3>
+      <p class="gunluk-card-excerpt">Siyah dalgalı mum nasıl çıktı? Birkaç deneme...</p>
+    </a>
+
+    <a href="gunluk.html" class="gunluk-card" style="--rot:-1deg;">
+      <div class="gunluk-card-img" style="background-image:url('sis-yanan.jpg');background-size:cover;background-position:center;"></div>
+      <div class="gunluk-card-date">— Ocak 2026 —</div>
+      <h3 class="gunluk-card-title">Sessiz bir başlangıç</h3>
+      <p class="gunluk-card-excerpt">Atölyenin ilk günlerinden — kavanozlar, fitiller...</p>
+    </a>
+  </div>
+
+  <a href="gunluk.html" class="gunluk-cta">Tüm Günlük →</a>
+</section>
+
+<!-- ============ İLETİŞİM ÇAĞRISI ============ -->
+<section class="contact-cta reveal">
+  <div class="contact-eyebrow">— Bizimle Konuş —</div>
+  <h2 class="contact-h">Özel <em>bir mum mu</em> aklında?</h2>
+  <p class="contact-sub">
+    Sipariş, özel tasarım, hediye paketleri veya sadece merhaba demek için —<br/>
+    en hızlısı WhatsApp veya Instagram, ya da bir mesaj bırak.
+  </p>
+
+  <div class="contact-buttons">
+    <a href="https://wa.me/905462322939?text=Merhaba,%20Mum%20Işığı%20Atölyesi'nden%20bilgi%20almak%20istiyorum." 
+       class="contact-btn contact-btn-wa" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp ile yaz
+    </a>
+    <a href="https://instagram.com/mumisigi.atolye" class="contact-btn contact-btn-ig" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      Instagram'da takip et
+    </a>
+    <a href="iletisim.html" class="contact-btn contact-btn-form">
+      Form bırak →
+    </a>
   </div>
 </section>
 

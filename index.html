@@ -69,6 +69,101 @@
     50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
   }
 
+  /* ========== AŞAMA 1: Sadece mum (tıklanabilir başlatıcı) ========== */
+  .splash-mum-wrap {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+  }
+  .splash-mum-wrap.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .splash-mum {
+    width: 380px;
+    height: auto;
+    max-width: 70vw;
+    max-height: 65vh;
+    user-select: none;
+    -webkit-user-drag: none;
+    opacity: 0;
+    animation: mumIn 1.5s ease 0.3s forwards, mumGlow 4s ease-in-out 2s infinite;
+    filter: drop-shadow(0 0 60px rgba(232, 164, 71, 0.4));
+  }
+  @keyframes mumIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes mumGlow {
+    0%, 100% { filter: drop-shadow(0 0 60px rgba(232, 164, 71, 0.4)); transform: scale(1); }
+    50% { filter: drop-shadow(0 0 90px rgba(232, 164, 71, 0.65)); transform: scale(1.025); }
+  }
+  .splash-mum-hint {
+    margin-top: 32px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: rgba(232, 164, 71, 0.55);
+    letter-spacing: 6px;
+    text-transform: lowercase;
+    opacity: 0;
+    animation: mumHintIn 1.5s ease 2.2s forwards, mumHintPulse 2.5s ease-in-out 4s infinite;
+  }
+  @keyframes mumHintIn { to { opacity: 1; } }
+  @keyframes mumHintPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.9; }
+  }
+
+  /* ========== AŞAMA 2: Logo + içerik (video bittikten sonra) ========== */
+  .splash-content {
+    position: relative;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.2s ease, visibility 1.2s ease;
+    width: 100%;
+  }
+  .splash-content.show {
+    opacity: 1;
+    visibility: visible;
+  }
+  /* Stage 2 alt elementleri: ancak .show class'ı geldiğinde animate olsun */
+  .splash-content .splash-logo,
+  .splash-content .splash-title,
+  .splash-content .splash-credit,
+  .splash-content .splash-quote,
+  .splash-content .splash-buttons {
+    animation: none !important;
+    opacity: 0;
+  }
+  .splash-content.show .splash-logo {
+    animation: splashLogoIn 2s ease 0.3s forwards !important;
+  }
+  .splash-content.show .splash-title {
+    animation: splashTitleIn 1.5s ease 0.8s forwards !important;
+  }
+  .splash-content.show .splash-credit {
+    animation: splashCreditIn 1.5s ease 1.5s forwards !important;
+  }
+  .splash-content.show .splash-quote {
+    animation: splashQuoteIn 1.5s ease 2.2s forwards !important;
+  }
+  .splash-content.show .splash-buttons {
+    animation: splashButtonsIn 1.2s ease 3s forwards !important;
+  }
+
   /* Logo as centerpiece */
   .splash-logo {
     width: 320px;
@@ -109,10 +204,10 @@
     color: rgba(250, 246, 238, 0.55);
     font-size: 14px;
     letter-spacing: 1px;
-    margin-top: -10px;
-    margin-bottom: 24px;
+    margin-top: 0;
+    margin-bottom: 30px;
     opacity: 0;
-    animation: splashCreditIn 1.5s ease 1.2s forwards;
+    animation: splashCreditIn 1.5s ease 2.2s forwards;
     position: relative;
     z-index: 2;
   }
@@ -160,7 +255,7 @@
     position: relative;
     z-index: 2;
     opacity: 0;
-    animation: splashQuoteIn 1.5s ease 2.5s forwards;
+    animation: splashQuoteIn 1.5s ease 3s forwards;
   }
   .splash-quote em {
     color: #e8a447;
@@ -178,7 +273,7 @@
     flex-wrap: wrap;
     justify-content: center;
     opacity: 0;
-    animation: splashButtonsIn 1.2s ease 4s forwards;
+    animation: splashButtonsIn 1.2s ease 4.5s forwards;
     position: relative;
     z-index: 2;
   }
@@ -233,7 +328,7 @@
     text-transform: uppercase;
     color: rgba(250, 246, 238, 0.3);
     opacity: 0;
-    animation: splashSkipIn 1s ease 5s forwards;
+    animation: splashSkipIn 1s ease 5.5s forwards;
     z-index: 2;
   }
   @keyframes splashSkipIn { to { opacity: 1; } }
@@ -327,6 +422,8 @@
 
   /* Mobile */
   @media (max-width: 768px) {
+    .splash-mum { width: 260px; max-width: 75vw; }
+    .splash-mum-hint { font-size: 12px; letter-spacing: 4px; margin-top: 24px; }
     .splash-logo { width: 220px; height: 220px; margin-bottom: 20px; }
     .splash-credit { font-size: 12px; margin-bottom: 18px; }
     .splash-title { font-size: 16px; letter-spacing: 3px; margin-bottom: 30px; }
@@ -1205,28 +1302,36 @@
 
 <!-- ============ SPLASH INTRO SCREEN ============ -->
 <div class="splash" id="splash">
-  <!-- Real logo as centerpiece -->
-  <img src="logo-seffaf.png" alt="Mum Işığı Atölyesi" class="splash-logo">
 
-  <p class="splash-credit">by <em>Merve Aslan</em></p>
-
-  <h2 class="splash-title">Bir mum hikayesi...</h2>
-
-  <h1 class="splash-quote">
-    Her büyük umut,<br/>
-    <em>küçük bir kıvılcımla</em> başlar.
-  </h1>
-
-  <div class="splash-buttons">
-    <button class="splash-btn splash-btn-primary" onclick="openVideo()">
-      ▶ Hikayemizi İzle
-    </button>
-    <button class="splash-btn splash-btn-secondary" onclick="enterAtolye()">
-      Atölyeye Gir →
-    </button>
+  <!-- AŞAMA 1: Sadece mum (tıklayınca video başlar) -->
+  <div class="splash-mum-wrap" id="splashStage1" onclick="startStory()">
+    <img src="mum-statik.png" alt="Mum Işığı" class="splash-mum">
+    <div class="splash-mum-hint">tıkla</div>
   </div>
 
-  <div class="splash-skip">Geçmek için butonlardan birini seç</div>
+  <!-- AŞAMA 2: Logo + içerik (video bittikten sonra gözükür) -->
+  <div class="splash-content" id="splashStage2">
+    <img src="logo-seffaf.png" alt="Mum Işığı Atölyesi" class="splash-logo">
+
+    <h2 class="splash-title">Bir mum hikayesi...</h2>
+
+    <p class="splash-credit">by <em>Merve Aslan</em></p>
+
+    <h1 class="splash-quote">
+      Her büyük umut,<br/>
+      <em>küçük bir kıvılcımla</em> başlar.
+    </h1>
+
+    <div class="splash-buttons">
+      <button class="splash-btn splash-btn-primary" onclick="goToHikaye()">
+        Hikayemizi Oku
+      </button>
+      <button class="splash-btn splash-btn-secondary" onclick="enterAtolye()">
+        Atölyeye Gir →
+      </button>
+    </div>
+  </div>
+
 </div>
 
 <!-- ============ VIDEO MODAL ============ -->
@@ -1253,16 +1358,6 @@
       <p class="video-placeholder-sub">— Çok yakında —</p>
     </div>
   </div>
-</div>
-
-<!-- ============ CINEMATIC BRIDGE (video → logo geçişi) ============ -->
-<div class="cinematic-bridge" id="cinematicBridge">
-  <div class="cb-flash"></div>
-  <div class="cb-beam"></div>
-  <div class="cb-particles" id="cbParticles"></div>
-  <img class="cb-logo" src="logo-seffaf.png" alt="Mum Işığı Atölyesi">
-  <div class="cb-tagline">— mum ışığı atölyesi —</div>
-  <button class="cb-continue" onclick="finishBridgeAndEnter()">Atölyeye Gir →</button>
 </div>
 
 <!-- Cursor -->
@@ -1329,16 +1424,23 @@
 
 
 <script>
-  // ============ SPLASH SCREEN ============
-  // Logo nefes alma animasyonu (giriş bittikten sonra)
-  setTimeout(() => {
-    const logo = document.querySelector('.splash-logo');
-    if (logo) logo.classList.add('entered');
-  }, 2300);
+  // ============ SPLASH FLOW: Mum → Video → Stage 2 ============
+
+  // Mum'a tıklayınca video başlar
+  function startStory() {
+    // Müzik için "user gesture" hazırla (Chrome autoplay policy)
+    sessionStorage.setItem('autoplay-music', '1');
+    
+    // Aşama 1 (mum) kaybolsun
+    const stage1 = document.getElementById('splashStage1');
+    if (stage1) stage1.classList.add('hide');
+    
+    // Video başlat
+    openVideo();
+  }
 
   // "Atölyeye Gir" → atolye.html'e git
   function enterAtolye() {
-    // Müzik için "user gesture" hazırla (Chrome autoplay policy)
     sessionStorage.setItem('autoplay-music', '1');
     
     const splash = document.getElementById('splash');
@@ -1349,18 +1451,26 @@
     }, 800);
   }
 
-  // ▶ Hikayemizi İzle → video modal
-  function openVideo() {
-    // Müzik için "user gesture" hazırla
+  // "Hikayemizi Oku" → hikaye.html'e git
+  function goToHikaye() {
     sessionStorage.setItem('autoplay-music', '1');
     
+    const splash = document.getElementById('splash');
+    splash.classList.add('fade-out');
+    
+    setTimeout(() => {
+      window.location.href = 'hikaye.html';
+    }, 800);
+  }
+
+  // Video oynat
+  function openVideo() {
     const modal = document.getElementById('videoModal');
     const video = document.getElementById('introVideo');
     const placeholder = document.getElementById('videoPlaceholder');
     
     modal.classList.add('show');
     
-    // Video varsa onu göster ve oynat; yoksa placeholder
     video.addEventListener('error', () => {
       video.style.display = 'none';
       placeholder.style.display = 'flex';
@@ -1377,14 +1487,14 @@
       }
     }, { once: true });
 
-    // Video bittiğinde sinematik geçişe başla
+    // Video bittiğinde → Stage 2'yi göster (logo + içerik)
     video.addEventListener('ended', () => {
       modal.classList.add('fading-out');
       setTimeout(() => {
         modal.classList.remove('show');
         modal.classList.remove('fading-out');
         video.pause();
-        startCinematicBridge();
+        showStage2();
       }, 600);
     }, { once: true });
     
@@ -1405,10 +1515,26 @@
         modal.classList.remove('show');
         modal.classList.remove('fading-out');
         if (video) video.pause();
-        startCinematicBridge();
+        showStage2();
       }, 600);
     }
   }
+
+  // Stage 2'yi göster (logo + Bir mum hikayesi + by Merve + söz + butonlar)
+  function showStage2() {
+    const stage2 = document.getElementById('splashStage2');
+    if (stage2) stage2.classList.add('show');
+  }
+
+  // ESC ile video kapat → stage 2 görünsün
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const modal = document.getElementById('videoModal');
+      if (modal && modal.classList.contains('show')) {
+        closeVideo();
+      }
+    }
+  });
 
   // ============ CINEMATIC BRIDGE ============
   function startCinematicBridge() {
