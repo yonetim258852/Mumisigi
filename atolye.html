@@ -69,14 +69,18 @@
     50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
   }
 
+  /* Splash interactive — tüm splash tıklanabilir */
+  .splash { cursor: pointer; }
+
   /* Logo as centerpiece */
   .splash-logo {
-    width: 320px;
-    height: 320px;
-    margin-bottom: 20px;
+    width: 380px;
+    height: auto;
+    max-width: 80vw;
+    margin-bottom: 18px;
     opacity: 0;
     animation: splashLogoIn 2s ease 0.3s forwards;
-    filter: drop-shadow(0 0 40px rgba(232, 164, 71, 0.3));
+    filter: drop-shadow(0 0 40px rgba(232, 164, 71, 0.15));
     position: relative;
     z-index: 2;
     user-select: none;
@@ -84,16 +88,24 @@
   }
   @keyframes splashLogoIn {
     0% { opacity: 0; transform: scale(0.92); filter: drop-shadow(0 0 0 rgba(232, 164, 71, 0)); }
-    60% { opacity: 1; transform: scale(1.02); filter: drop-shadow(0 0 60px rgba(232, 164, 71, 0.5)); }
-    100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 40px rgba(232, 164, 71, 0.3)); }
+    60% { opacity: 1; transform: scale(1.02); filter: drop-shadow(0 0 60px rgba(232, 164, 71, 0.28)); }
+    100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 40px rgba(232, 164, 71, 0.15)); }
   }
+  /* Yumuşak nefes alma animasyonu */
   @keyframes splashLogoFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
+    0%, 100% { 
+      filter: drop-shadow(0 0 40px rgba(232, 164, 71, 0.15));
+      transform: scale(1);
+    }
+    50% { 
+      filter: drop-shadow(0 0 60px rgba(232, 164, 71, 0.28));
+      transform: scale(1.02);
+    }
   }
   .splash-logo.entered {
-    animation: splashLogoFloat 4s ease-in-out infinite;
+    animation: splashLogoFloat 6s ease-in-out infinite;
   }
+  /* Flicker keyframe used by video placeholder */
   @keyframes splashFlicker {
     0%, 100% { transform: scale(1) rotate(0); }
     25% { transform: scale(1.05, 0.95) rotate(-1deg); }
@@ -101,142 +113,45 @@
     75% { transform: scale(1.03, 0.98) rotate(-0.5deg); }
   }
 
-  /* "by Merve Aslan" */
-  .splash-credit {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-weight: 300;
-    color: rgba(250, 246, 238, 0.55);
-    font-size: 14px;
-    letter-spacing: 1px;
-    margin-top: -10px;
-    margin-bottom: 24px;
+  /* m. aslan imzası */
+  .splash-signature {
+    width: 200px;
+    height: auto;
+    max-width: 50vw;
     opacity: 0;
-    animation: splashCreditIn 1.5s ease 1.2s forwards;
+    animation: splashSignatureIn 2s ease 1.4s forwards;
     position: relative;
     z-index: 2;
+    user-select: none;
+    -webkit-user-drag: none;
   }
-  .splash-credit em {
-    color: rgba(232, 164, 71, 0.85);
-    font-style: italic;
-    font-weight: 400;
-  }
-  @keyframes splashCreditIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+  @keyframes splashSignatureIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 0.92; transform: translateY(0); }
   }
 
-  /* "Bir mum hikayesi..." */
-  .splash-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-weight: 300;
-    color: #e8a447;
-    font-size: 22px;
-    letter-spacing: 4px;
-    margin-bottom: 30px;
-    opacity: 0;
-    animation: splashTitleIn 1.5s ease 1.5s forwards;
-    position: relative;
-    z-index: 2;
-    text-transform: lowercase;
-  }
-  @keyframes splashTitleIn {
-    from { opacity: 0; transform: translateY(15px); letter-spacing: 8px; }
-    to { opacity: 1; transform: translateY(0); letter-spacing: 4px; }
-  }
-
-  /* Söz */
-  .splash-quote {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-weight: 300;
-    color: #faf6ee;
-    font-size: 42px;
-    line-height: 1.3;
-    max-width: 800px;
-    margin-bottom: 50px;
-    letter-spacing: -0.5px;
-    position: relative;
-    z-index: 2;
-    opacity: 0;
-    animation: splashQuoteIn 1.5s ease 2.5s forwards;
-  }
-  .splash-quote em {
-    color: #e8a447;
-    font-style: italic;
-  }
-  @keyframes splashQuoteIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Butonlar */
-  .splash-buttons {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    justify-content: center;
-    opacity: 0;
-    animation: splashButtonsIn 1.2s ease 4s forwards;
-    position: relative;
-    z-index: 2;
-  }
-  @keyframes splashButtonsIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .splash-btn {
-    padding: 16px 32px;
-    border-radius: 999px;
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    border: 1px solid;
-  }
-  .splash-btn-primary {
-    background: transparent;
-    color: #faf6ee;
-    border-color: rgba(250, 246, 238, 0.4);
-  }
-  .splash-btn-primary:hover {
-    border-color: #e8a447;
-    color: #e8a447;
-    transform: translateY(-2px);
-  }
-  .splash-btn-secondary {
-    background: #faf6ee;
-    color: #000;
-    border-color: #faf6ee;
-  }
-  .splash-btn-secondary:hover {
-    background: #e8a447;
-    border-color: #e8a447;
-    color: #000;
-    transform: translateY(-2px);
-  }
-
-  /* Skip note */
-  .splash-skip {
+  /* Tıklama ipucu */
+  .splash-hint {
     position: absolute;
-    bottom: 30px; left: 50%;
+    bottom: 48px;
+    left: 50%;
     transform: translateX(-50%);
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(250, 246, 238, 0.3);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: rgba(232, 164, 71, 0.55);
+    letter-spacing: 3px;
+    text-transform: lowercase;
     opacity: 0;
-    animation: splashSkipIn 1s ease 5s forwards;
+    animation: splashHintIn 2s ease 2.8s forwards, splashHintPulse 3s ease-in-out 5s infinite;
     z-index: 2;
+    pointer-events: none;
   }
-  @keyframes splashSkipIn { to { opacity: 1; } }
+  @keyframes splashHintIn { to { opacity: 1; } }
+  @keyframes splashHintPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.85; }
+  }
 
   /* Video modal */
   .video-modal {
@@ -327,12 +242,9 @@
 
   /* Mobile */
   @media (max-width: 768px) {
-    .splash-logo { width: 220px; height: 220px; margin-bottom: 20px; }
-    .splash-credit { font-size: 12px; margin-bottom: 18px; }
-    .splash-title { font-size: 16px; letter-spacing: 3px; margin-bottom: 30px; }
-    .splash-quote { font-size: 28px; margin-bottom: 40px; }
-    .splash-buttons { flex-direction: column; width: 100%; max-width: 280px; }
-    .splash-btn { width: 100%; justify-content: center; }
+    .splash-logo { width: 260px; height: auto; margin-bottom: 14px; }
+    .splash-signature { width: 150px; }
+    .splash-hint { font-size: 11px; bottom: 32px; letter-spacing: 2px; }
     .video-modal { padding: 0; }
     .video-close { top: 16px; right: 16px; }
   }
@@ -1201,77 +1113,7 @@
   }
 </style>
 </head>
-<body class="splash-active">
-
-<!-- ============ SPLASH INTRO SCREEN ============ -->
-<div class="splash" id="splash">
-  <!-- Real logo as centerpiece -->
-  <img src="logo-seffaf.png" alt="Mum Işığı Atölyesi" class="splash-logo">
-
-  <p class="splash-credit">by <em>Merve Aslan</em></p>
-
-  <h2 class="splash-title">Bir mum hikayesi...</h2>
-
-  <h1 class="splash-quote">
-    Her büyük umut,<br/>
-    <em>küçük bir kıvılcımla</em> başlar.
-  </h1>
-
-  <div class="splash-buttons">
-    <button class="splash-btn splash-btn-primary" onclick="openVideo()">
-      ▶ Hikayemizi İzle
-    </button>
-    <button class="splash-btn splash-btn-secondary" onclick="enterAtolye()">
-      Atölyeye Gir →
-    </button>
-  </div>
-
-  <div class="splash-skip">Geçmek için butonlardan birini seç</div>
-</div>
-
-<!-- ============ VIDEO MODAL ============ -->
-<div class="video-modal" id="videoModal">
-  <div class="video-modal-inner">
-    <button class="video-close" onclick="closeVideo()">×</button>
-
-    <!-- Cinematic video player. Video bitince logo'da dondurur, sonra cinematic bridge'e geçer -->
-    <video id="introVideo" playsinline preload="auto" style="display:none;">
-      <source src="intro-video.mp4" type="video/mp4">
-    </video>
-
-    <!-- Video yoksa görünecek placeholder -->
-    <div class="video-placeholder" id="videoPlaceholder">
-      <svg class="video-placeholder-flame" viewBox="0 0 60 90">
-        <ellipse cx="30" cy="40" rx="22" ry="35" fill="#e8a447" opacity="0.4"/>
-        <path d="M 30 8 Q 15 35 15 65 Q 15 80 30 80 Q 45 80 45 65 Q 45 35 30 8 Z" fill="#f0c674"/>
-        <path d="M 30 25 Q 22 45 22 65 Q 22 75 30 75 Q 38 75 38 65 Q 38 45 30 25 Z" fill="#fde8b3"/>
-      </svg>
-      <p class="video-placeholder-text">
-        Hikayemiz yakında <em style="color:#e8a447;">burada.</em><br/>
-        Atölyeden ilk video çekilince paylaşacağız.
-      </p>
-      <p class="video-placeholder-sub">— Çok yakında —</p>
-    </div>
-  </div>
-</div>
-
-<!-- ============ CINEMATIC BRIDGE (video → logo geçişi) ============ -->
-<div class="cinematic-bridge" id="cinematicBridge">
-  <div class="cb-flash"></div>
-  <div class="cb-beam"></div>
-  <div class="cb-particles" id="cbParticles"></div>
-  <img class="cb-logo" src="logo-seffaf.png" alt="Mum Işığı Atölyesi">
-  <div class="cb-tagline">— mum ışığı atölyesi —</div>
-  <button class="cb-continue" onclick="finishBridgeAndEnter()">Atölyeye Gir →</button>
-</div>
-
-<!-- Cursor -->
-<div class="cursor-flame" id="cursorFlame">
-  <svg viewBox="0 0 20 20"><ellipse cx="10" cy="10" rx="5" ry="8" fill="#e8a447" opacity="0.6"/><ellipse cx="10" cy="11" rx="2.5" ry="5" fill="#fde8b3"/></svg>
-</div>
-
-<!-- Ambient particles -->
-<div class="ambient" id="ambient"></div>
+<body>
 
 <!-- ============ FON MÜZİĞİ ============ -->
 <audio id="bgMusic" loop preload="auto">
@@ -1279,7 +1121,7 @@
 </audio>
 
 <!-- Müzik aç/kapa butonu (sağ altta yüzer) -->
-<button id="musicToggle" class="music-toggle" aria-label="Fon müziği aç/kapa" title="Fon müziği">
+<button id="musicToggle" class="music-toggle visible" aria-label="Fon müziği aç/kapa" title="Fon müziği">
   <svg class="music-icon-on" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="display:block;">
     <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
   </svg>
@@ -1326,150 +1168,397 @@
   }
 </style>
 
+<!-- Cursor -->
+<div class="cursor-flame" id="cursorFlame">
+  <svg viewBox="0 0 20 20"><ellipse cx="10" cy="10" rx="5" ry="8" fill="#e8a447" opacity="0.6"/><ellipse cx="10" cy="11" rx="2.5" ry="5" fill="#fde8b3"/></svg>
+</div>
 
+<!-- Ambient particles -->
+<div class="ambient" id="ambient"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-brand">Mum Işığı</div>
+  <div class="nav-links">
+    <a href="koleksiyon.html"><span>Koleksiyon</span></a>
+    <a href="hikaye.html"><span>Hikaye</span></a>
+    <a href="gunluk.html"><span>Atölye Günlüğü</span></a>
+    <a href="iletisim.html"><span>İletişim</span></a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+  <!-- Real watercolor logo -->
+  <div class="hero-logo">
+    <img src="logo.png" alt="Mum Işığı Atölyesi" class="hero-logo-img">
+  </div>
+
+  <div class="hero-eyebrow">— El yapımı · Küçük üretim · Türkiye —</div>
+
+  <h1 class="hero-title">
+    <span class="word">Sessizlikle</span>
+    <span class="word">yapılır,</span>
+    <span class="word"><em>sessizlikte</em></span>
+    <span class="word"><em>yanar.</em></span>
+  </h1>
+
+  <p class="hero-sub">
+    Küçük bir atölyede, doğal soya mumundan, özenle seçilmiş kokularla — bir mumu döken kadar sabırlı bir dünyaya.
+  </p>
+
+  <a href="#koleksiyon" class="hero-cta">Koleksiyonu Keşfet →</a>
+
+  <div class="scroll-hint">↓ Aşağı kaydır</div>
+</section>
+
+<!-- ============ EDITORIAL BANNER ============ -->
+<section class="banner reveal">
+  <div class="banner-eyebrow">— Atölye Felsefesi —</div>
+  <h2 class="banner-h">Yavaş yapılan, <em>uzun yanan.</em></h2>
+</section>
+
+<!-- ============ ATMOSPHERIC HERO IMAGE ============ -->
+<section class="atmospheric reveal">
+  <img src="gul-buketi-1.jpg" alt="El yapımı gül buketi mum koleksiyonu" class="atmospheric-img">
+  <div class="atmospheric-overlay">
+    <p class="atmospheric-quote">
+      <em>"Bir mumu yakmak,<br/>sadece bir odayı aydınlatmak değil;<br/>bir anıyı canlandırmaktır."</em>
+    </p>
+  </div>
+</section>
+
+<!-- ============ COLLECTION ============ -->
+<section class="collection" id="koleksiyon">
+  <div class="col-head reveal">
+    <div class="col-eyebrow">— Koleksiyon · 2026 İlkbahar —</div>
+    <a href="koleksiyon.html" class="col-link">Tümünü Gör →</a>
+  </div>
+
+  <div class="grid">
+    <!-- CARD 1: Karşılaşma (gül buketi - kız arkadaşının ana ürünü) -->
+    <a class="card clickable reveal reveal-delay-1" href="urun-karsilasma.html" style="text-decoration:none;color:inherit;">
+      <div class="card-num">— 01 —</div>
+      <div class="card-img" style="background-image:url('gul-buketi-1.jpg');background-size:contain;background-position:center;background-repeat:no-repeat;background-color:#ede5d4;">
+        <div class="card-hover-hint">✦ Detayları gör</div>
+      </div>
+      <h3 class="card-name">Karşılaşma</h3>
+      <div class="card-scent">Bir gül buketi · El yapımı</div>
+      <div class="card-price" style="color:var(--gold);border-bottom:1px solid var(--gold);display:inline-block;padding-bottom:3px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;font-family:'Inter',sans-serif;">İletişime Geç →</div>
+    </a>
+
+    <!-- CARD 2: Gece (siyah dalgalı, heykel mum) -->
+    <a class="card clickable reveal reveal-delay-2" href="urun-gece.html" style="text-decoration:none;color:inherit;">
+      <div class="card-num">— 02 —</div>
+      <div class="card-img" style="background-image:url('gece-1.jpg');background-size:contain;background-position:center;background-repeat:no-repeat;background-color:#ede5d4;">
+        <div class="card-hover-hint">✦ Detayları gör</div>
+      </div>
+      <h3 class="card-name">Gece</h3>
+      <div class="card-scent">Tütsü · Oud · Vetiver</div>
+      <div class="card-price" style="color:var(--gold);border-bottom:1px solid var(--gold);display:inline-block;padding-bottom:3px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;font-family:'Inter',sans-serif;">İletişime Geç →</div>
+    </a>
+
+    <!-- CARD 3: Sessiz Üçlü (Model 5 set) -->
+    <a class="card clickable reveal reveal-delay-3" href="urun-model5.html" style="text-decoration:none;color:inherit;">
+      <div class="card-num">— 03 —</div>
+      <div class="card-img" style="background-image:url('model-5-1.jpg');background-size:contain;background-position:center;background-repeat:no-repeat;background-color:#ede5d4;">
+        <div class="card-hover-hint">✦ Detayları gör</div>
+      </div>
+      <h3 class="card-name">Sessiz Üçlü</h3>
+      <div class="card-scent">Sandal · Amber · Çam</div>
+      <div class="card-price" style="color:var(--gold);border-bottom:1px solid var(--gold);display:inline-block;padding-bottom:3px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;font-family:'Inter',sans-serif;">İletişime Geç →</div>
+    </a>
+  </div>
+</section>
+
+<!-- ============ STORY ============ -->
+<section class="story reveal">
+  <div class="story-img">
+    <svg class="story-candle" viewBox="0 0 100 140">
+      <ellipse cx="50" cy="20" rx="20" ry="30" fill="#f5d989" opacity="0.3"/>
+      <path d="M 28 50 Q 28 45 33 45 L 67 45 Q 72 45 72 50 L 72 135 L 28 135 Z"
+            fill="rgba(255,250,235,0.85)" stroke="#b8945a" stroke-width="0.8"/>
+      <line x1="50" y1="45" x2="50" y2="38" stroke="#3d2f22" stroke-width="1.2"/>
+      <ellipse cx="50" cy="30" rx="6" ry="10" fill="#f5d989" opacity="0.6"/>
+      <path d="M 50 18 Q 46 28 46 36 Q 46 42 50 42 Q 54 42 54 36 Q 54 28 50 18 Z" fill="#f0c674">
+        <animateTransform attributeName="transform" type="scale"
+                          values="1,1; 1.05,0.95; 0.97,1.05; 1,1"
+                          dur="2.5s" repeatCount="indefinite"
+                          additive="sum"/>
+      </path>
+      <path d="M 50 26 Q 48 32 48 36 Q 48 39 50 39 Q 52 39 52 36 Q 52 32 50 26 Z" fill="#fde8b3"/>
+    </svg>
+  </div>
+  <div>
+    <div class="story-eyebrow">— Atölyeden —</div>
+    <h2 class="story-h">Karanlıktan <em>aydınlığa</em>, bir kıvılcımla.</h2>
+    <p class="story-p">
+      Mum Işığı Atölyesi, küçük bir tezgâhta, sessiz bir niyetle başladı. Her büyük umut, küçük bir kıvılcımla başlar — biz de bu inançla, her mumu tek tek dökmeyi, dinlendirmeyi, elle etiketlemeyi seçtik.
+    </p>
+    <p class="story-p" style="margin-top:-16px;">
+      Bir mumu yakmak, sadece bir odayı aydınlatmak değil; bir anıyı canlandırmaktır.
+    </p>
+    <a href="#" class="story-link">Hikayemizi Oku →</a>
+  </div>
+</section>
+
+<!-- ============ VALUES ============ -->
+<section class="values reveal">
+  <div class="values-eyebrow">— Temel Değerlerimiz —</div>
+  <h2 class="values-h">Her mumda <em style="color:var(--gold);font-style:italic">üç şey</em> var.</h2>
+
+  <div class="values-grid">
+    <div class="value-card">
+      <svg class="value-icon" viewBox="0 0 56 56" fill="none">
+        <path d="M28 48 L12 32 Q4 24 12 16 Q20 8 28 16 Q36 8 44 16 Q52 24 44 32 Z"
+              stroke="currentColor" stroke-width="1.5" fill="rgba(184,148,90,0.08)"/>
+      </svg>
+      <h3 class="value-name">Samimiyet</h3>
+      <p class="value-desc">Her mumu, evimize koyacağımız o sıcaklığı düşünerek hazırlıyoruz.</p>
+    </div>
+
+    <div class="value-card">
+      <svg class="value-icon" viewBox="0 0 56 56" fill="none">
+        <path d="M18 32 Q14 24 16 16 Q24 14 28 22 Q32 14 40 16 Q42 24 38 32 Q30 36 28 44 Q26 36 18 32 Z"
+              stroke="currentColor" stroke-width="1.5" fill="rgba(184,148,90,0.08)"/>
+        <circle cx="28" cy="28" r="2" fill="currentColor"/>
+      </svg>
+      <h3 class="value-name">El Emeği</h3>
+      <p class="value-desc">Artizanal üretim sürecimizle her ürüne ruhumuzu katıyoruz.</p>
+    </div>
+
+    <div class="value-card">
+      <svg class="value-icon" viewBox="0 0 56 56" fill="none">
+        <path d="M28 8 Q22 20 22 30 Q22 40 28 46 Q34 40 34 30 Q34 20 28 8 Z"
+              stroke="currentColor" stroke-width="1.5" fill="rgba(184,148,90,0.08)"/>
+        <path d="M28 20 Q26 28 26 32 Q26 36 28 38 Q30 36 30 32 Q30 28 28 20 Z"
+              fill="currentColor" opacity="0.6"/>
+      </svg>
+      <h3 class="value-name">Umut</h3>
+      <p class="value-desc">Küçük bir alevin büyük dönüşümler başlatabileceğine inanıyoruz.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARISON ============ -->
+<section class="compare reveal">
+  <div class="compare-inner">
+    <div class="compare-eyebrow">— Neden Mum Işığı —</div>
+    <h2 class="compare-h">Bir mum, <em style="color:var(--gold);font-style:italic">bir mum değildir.</em></h2>
+
+    <div class="compare-table">
+      <div class="compare-row header">
+        <div class="compare-cell">Özellik</div>
+        <div class="compare-cell">Endüstriyel Mumlar</div>
+        <div class="compare-cell">Mum Işığı Atölyesi</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Hammadde</div>
+        <div class="compare-cell">Parafin (petrol türevi)</div>
+        <div class="compare-cell">%100 Saf Soya Mumu</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Koku</div>
+        <div class="compare-cell">Sentetik ve yoğun</div>
+        <div class="compare-cell">Doğal esansiyel yağlar</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Yanma süresi</div>
+        <div class="compare-cell">Hızlı (20-30 saat)</div>
+        <div class="compare-cell">Uzun ömürlü (50+ saat)</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Çevresel etki</div>
+        <div class="compare-cell">Karbon salınımı yüksek</div>
+        <div class="compare-cell">Eco-friendly, biyo-bozunur</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Ruh ve tasarım</div>
+        <div class="compare-cell">Mekanik seri üretim</div>
+        <div class="compare-cell">Hikayesi olan el emeği</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUOTE ============ -->
+<section class="quote reveal">
+  <p class="quote-text">Bazen tek bir ışık, karanlığı yenmek için yeterli bir umuttur. Biz o ışığı el emeğimizle harmanlıyoruz.</p>
+  <div class="quote-attr">— Mum Işığı Atölyesi Vizyon Bildirisi</div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="foot-wordmark">Mum Işığı</div>
+  <div class="foot-sub">A T Ö L Y E S İ</div>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <a href="https://wa.me/905462322939?text=Merhaba,%20Mum%20Işığı%20Atölyesi'nden%20bilgi%20almak%20istiyorum." class="foot-ig" target="_blank" rel="noopener">✦ WhatsApp · 0546 232 29 39</a>
+    <a href="https://instagram.com/mumisigi.atolye" class="foot-ig" target="_blank" rel="noopener">◆ @mumisigi.atolye</a>
+  </div>
+  <div class="foot-meta">© 2026 · El yapımı, Türkiye · mumisigiatolyesi.com.tr</div>
+</footer>
 
 <script>
-  // ============ SPLASH SCREEN ============
-  // Logo nefes alma animasyonu (giriş bittikten sonra)
-  setTimeout(() => {
-    const logo = document.querySelector('.splash-logo');
-    if (logo) logo.classList.add('entered');
-  }, 2300);
+  // ============ ATÖLYE SAYFASI ============
+  // Hero animasyonunu hemen başlat
+  window.addEventListener('DOMContentLoaded', () => {
+    const hero = document.getElementById('hero');
+    if (hero) hero.classList.add('animate-in');
+  });
 
-  // "Atölyeye Gir" → atolye.html'e git
-  function enterAtolye() {
-    // Müzik için "user gesture" hazırla (Chrome autoplay policy)
-    sessionStorage.setItem('autoplay-music', '1');
+  // ============ FON MÜZİĞİ ============
+  let bgMusicStarted = false;
+  function initBgMusic() {
+    const music = document.getElementById('bgMusic');
+    if (!music || bgMusicStarted) return;
     
-    const splash = document.getElementById('splash');
-    splash.classList.add('fade-out');
-    
-    setTimeout(() => {
-      window.location.href = 'atolye.html';
-    }, 800);
-  }
-
-  // ▶ Hikayemizi İzle → video modal
-  function openVideo() {
-    // Müzik için "user gesture" hazırla
-    sessionStorage.setItem('autoplay-music', '1');
-    
-    const modal = document.getElementById('videoModal');
-    const video = document.getElementById('introVideo');
-    const placeholder = document.getElementById('videoPlaceholder');
-    
-    modal.classList.add('show');
-    
-    // Video varsa onu göster ve oynat; yoksa placeholder
-    video.addEventListener('error', () => {
-      video.style.display = 'none';
-      placeholder.style.display = 'flex';
-    }, { once: true });
-    
-    video.addEventListener('loadeddata', () => {
-      video.style.display = 'block';
-      placeholder.style.display = 'none';
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          video.controls = true;
-        });
-      }
-    }, { once: true });
-
-    // Video bittiğinde sinematik geçişe başla
-    video.addEventListener('ended', () => {
-      modal.classList.add('fading-out');
-      setTimeout(() => {
-        modal.classList.remove('show');
-        modal.classList.remove('fading-out');
-        video.pause();
-        startCinematicBridge();
-      }, 600);
-    }, { once: true });
-    
-    video.addEventListener('click', () => {
-      if (video.paused) video.play();
-      else video.pause();
-    });
-    
-    video.load();
-  }
-
-  function closeVideo() {
-    const modal = document.getElementById('videoModal');
-    const video = document.getElementById('introVideo');
-    if (modal) {
-      modal.classList.add('fading-out');
-      setTimeout(() => {
-        modal.classList.remove('show');
-        modal.classList.remove('fading-out');
-        if (video) video.pause();
-        startCinematicBridge();
-      }, 600);
+    music.muted = false;
+    music.volume = 0;
+    const playPromise = music.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        bgMusicStarted = true;
+        // Yumuşak fade-in (0 → 0.32)
+        let vol = 0;
+        const fadeIn = setInterval(() => {
+          vol += 0.015;
+          if (vol >= 0.32) {
+            vol = 0.32;
+            clearInterval(fadeIn);
+          }
+          music.volume = vol;
+        }, 120);
+      }).catch(err => {
+        console.log('Müzik autoplay engellendi (kullanıcı tıklayınca çalar):', err);
+      });
     }
   }
 
-  // ============ CINEMATIC BRIDGE ============
-  function startCinematicBridge() {
-    const bridge = document.getElementById('cinematicBridge');
-    const particles = document.getElementById('cbParticles');
+  function toggleMusic() {
+    const music = document.getElementById('bgMusic');
+    const btn = document.getElementById('musicToggle');
+    if (!music || !btn) return;
     
-    const splash = document.getElementById('splash');
-    if (splash) splash.style.display = 'none';
-    
-    bridge.classList.add('active');
-    
-    for (let i = 0; i < 30; i++) {
-      const p = document.createElement('div');
-      p.className = 'cb-particle';
-      const drift = (Math.random() - 0.5) * 500;
-      const delay = 1.8 + Math.random() * 2;
-      const size = 2 + Math.random() * 3;
-      p.style.setProperty('--drift', drift + 'px');
-      p.style.animationDelay = delay + 's';
-      p.style.width = size + 'px';
-      p.style.height = size + 'px';
-      particles.appendChild(p);
-    }
-    
-    // 10 saniye sonra otomatik atölye sayfasına geç
-    setTimeout(() => {
-      if (bridge.classList.contains('active')) {
-        finishBridgeAndEnter();
+    if (music.paused || music.muted) {
+      music.muted = false;
+      if (music.paused) {
+        music.volume = 0.32;
+        music.play().catch(()=>{});
       }
-    }, 10000);
+      btn.classList.remove('muted');
+    } else {
+      music.muted = true;
+      btn.classList.add('muted');
+    }
   }
 
-  function finishBridgeAndEnter() {
-    const bridge = document.getElementById('cinematicBridge');
-    bridge.style.transition = 'opacity 1.2s ease';
-    bridge.style.opacity = '0';
+  // Müzik butonuna tıklama eventi
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('musicToggle');
+    if (btn) btn.addEventListener('click', toggleMusic);
     
-    setTimeout(() => {
-      // Atölye sayfasına git
-      window.location.href = 'atolye.html';
-    }, 1200);
-  }
-
-  // ESC ile video kapat (sonra bridge çalışır)
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      const modal = document.getElementById('videoModal');
-      if (modal && modal.classList.contains('show')) {
-        closeVideo();
-      }
+    // Splash'ten gelen kullanıcı etkileşimi flag'i varsa, müziği otomatik başlat
+    if (sessionStorage.getItem('autoplay-music') === '1') {
+      initBgMusic();
+      sessionStorage.removeItem('autoplay-music');
     }
+    
+    // Yine de ilk kullanıcı tıklamasında müzik başlat (Chrome autoplay policy)
+    const startOnInteract = () => {
+      initBgMusic();
+      document.removeEventListener('click', startOnInteract);
+      document.removeEventListener('keydown', startOnInteract);
+    };
+    document.addEventListener('click', startOnInteract);
+    document.addEventListener('keydown', startOnInteract);
   });
 
   // Custom cursor
   const cursor = document.getElementById('cursorFlame');
-  if (cursor) {
-    document.addEventListener('mousemove', (e) => {
-      cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+  });
+
+  // Hero animation now triggered by enterSite(), not on load
+
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
     });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Ambient floating particles (subtle, low frequency)
+  const ambient = document.getElementById('ambient');
+  function createAmbientParticle() {
+    const p = document.createElement('div');
+    p.className = 'ambient-dot';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = '100%';
+    ambient.appendChild(p);
+    const duration = 12000 + Math.random() * 8000;
+    const drift = (Math.random() - 0.5) * 200;
+    p.animate([
+      { opacity: 0, transform: 'translateY(0) translateX(0)' },
+      { opacity: 0.5, offset: 0.2 },
+      { opacity: 0.5, offset: 0.8 },
+      { opacity: 0, transform: `translateY(-110vh) translateX(${drift}px)` }
+    ], { duration: duration, easing: 'linear' });
+    setTimeout(() => p.remove(), duration);
   }
+  // Only on desktop, low rate
+  if (window.innerWidth > 768) {
+    setInterval(createAmbientParticle, 2500);
+  }
+
+  // Card click → goes to product detail
+  const productLinks = {
+    'Karşılaşma': 'urun-karsilasma.html',
+    'Sis': 'urun-sis.html',
+    'Akdeniz': 'urun-akdeniz.html'
+  };
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => {
+      const nameEl = card.querySelector('.card-name');
+      if (!nameEl) return;
+      const name = nameEl.textContent;
+      if (productLinks[name]) window.location.href = productLinks[name];
+    });
+  });
 </script>
+
+
+<!-- Floating Quick Contact Buttons -->
+<style>
+  .fab-wrap { position: fixed; bottom: 24px; right: 24px; z-index: 998; display: flex; flex-direction: column; gap: 12px; }
+  .fab { width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; box-shadow: 0 6px 20px rgba(60,40,20,0.25); transition: all 0.3s ease; cursor: pointer; }
+  .fab:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 10px 28px rgba(60,40,20,0.35); }
+  .fab-wa { background: #25D366; }
+  .fab-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+  .fab svg { width: 28px; height: 28px; fill: white; }
+  .fab-label { position: absolute; right: 64px; top: 50%; transform: translateY(-50%); background: rgba(61,47,34,0.95); color: #faf6ee; padding: 8px 14px; border-radius: 6px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+  .fab:hover .fab-label { opacity: 1; }
+  @media (max-width: 768px) { .fab-wrap { bottom: 16px; right: 16px; gap: 10px; } .fab { width: 48px; height: 48px; } .fab svg { width: 24px; height: 24px; } .fab-label { display: none; } }
+</style>
+<div class="fab-wrap">
+  <a href="https://wa.me/905462322939?text=Merhaba,%20Mum%20Işığı%20Atölyesi'nden%20bilgi%20almak%20istiyorum." class="fab fab-wa" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <span class="fab-label">WhatsApp ile yaz</span>
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+  <a href="https://instagram.com/mumisigi.atolye" class="fab fab-ig" target="_blank" rel="noopener" aria-label="Instagram">
+    <span class="fab-label">Instagram'da takip et</span>
+    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+  </a>
+</div>
 
 </body>
 </html>
