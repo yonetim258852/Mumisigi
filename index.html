@@ -69,59 +69,6 @@
     50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
   }
 
-  /* ========== AŞAMA 1: Sadece mum (tıklanabilir başlatıcı) ========== */
-  .splash-mum-wrap {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 5;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
-  }
-  .splash-mum-wrap.hide {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
-  .splash-mum {
-    width: 380px;
-    height: auto;
-    max-width: 70vw;
-    max-height: 65vh;
-    user-select: none;
-    -webkit-user-drag: none;
-    opacity: 0;
-    animation: mumIn 1.5s ease 0.3s forwards, mumGlow 4s ease-in-out 2s infinite;
-    filter: drop-shadow(0 0 60px rgba(232, 164, 71, 0.4));
-  }
-  @keyframes mumIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-  }
-  @keyframes mumGlow {
-    0%, 100% { filter: drop-shadow(0 0 60px rgba(232, 164, 71, 0.4)); transform: scale(1); }
-    50% { filter: drop-shadow(0 0 90px rgba(232, 164, 71, 0.65)); transform: scale(1.025); }
-  }
-  .splash-mum-hint {
-    margin-top: 32px;
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 14px;
-    color: rgba(232, 164, 71, 0.55);
-    letter-spacing: 6px;
-    text-transform: lowercase;
-    opacity: 0;
-    animation: mumHintIn 1.5s ease 2.2s forwards, mumHintPulse 2.5s ease-in-out 4s infinite;
-  }
-  @keyframes mumHintIn { to { opacity: 1; } }
-  @keyframes mumHintPulse {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 0.9; }
-  }
-
   /* ========== AŞAMA 2: Logo + içerik (video bittikten sonra) ========== */
   .splash-content {
     position: relative;
@@ -337,15 +284,13 @@
   .video-modal {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.92);
-    backdrop-filter: blur(12px);
+    background: #000;
     z-index: 10000;
     display: none;
     align-items: center;
     justify-content: center;
     opacity: 0;
     transition: opacity 0.6s ease;
-    padding: 24px;
   }
   .video-modal.show {
     display: flex;
@@ -357,21 +302,14 @@
   .video-modal-box {
     position: relative;
     width: 100%;
-    max-width: 720px;
-    transform: scale(0.95);
-    transition: transform 0.6s ease;
-  }
-  .video-modal.show .video-modal-box {
-    transform: scale(1);
+    height: 100%;
   }
   .video-modal-inner {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    height: 100%;
     background: #000;
     overflow: hidden;
-    border-radius: 12px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.6), 0 0 100px rgba(232, 164, 71, 0.15);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -379,7 +317,7 @@
   .video-modal video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     background: #000;
     display: block;
   }
@@ -417,14 +355,14 @@
   }
   .video-close {
     position: absolute;
-    top: -50px; right: 0;
+    top: 24px; right: 24px;
     background: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(250, 246, 238, 0.3);
     color: #faf6ee;
-    width: 40px; height: 40px;
+    width: 44px; height: 44px;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 20px;
     transition: all 0.3s;
     z-index: 100;
     backdrop-filter: blur(10px);
@@ -437,8 +375,6 @@
 
   /* Mobile */
   @media (max-width: 768px) {
-    .splash-mum { width: 260px; max-width: 75vw; }
-    .splash-mum-hint { font-size: 12px; letter-spacing: 4px; margin-top: 24px; }
     .splash-logo { width: 220px; height: 220px; margin-bottom: 20px; }
     .splash-credit { font-size: 12px; margin-bottom: 18px; }
     .splash-title { font-size: 16px; letter-spacing: 3px; margin-bottom: 30px; }
@@ -448,7 +384,7 @@
     .video-modal { padding: 16px; }
     .video-modal-box { max-width: 100%; }
     .video-modal-inner { border-radius: 8px; }
-    .video-close { top: -44px; right: 0; width: 36px; height: 36px; font-size: 16px; }
+    .video-close { top: 16px; right: 16px; width: 38px; height: 38px; font-size: 16px; }
   }
 
   /* ============ CINEMATIC TRANSITION ============
@@ -1320,12 +1256,6 @@
 <!-- ============ SPLASH INTRO SCREEN ============ -->
 <div class="splash" id="splash">
 
-  <!-- AŞAMA 1: Sadece mum (tıklayınca video başlar) -->
-  <div class="splash-mum-wrap" id="splashStage1" onclick="startStory()">
-    <img src="mum-statik.png" alt="Mum Işığı" class="splash-mum">
-    <div class="splash-mum-hint">tıkla</div>
-  </div>
-
   <!-- AŞAMA 2: Logo + içerik (video bittikten sonra gözükür) -->
   <div class="splash-content" id="splashStage2">
     <img src="logo-seffaf.png" alt="Mum Işığı Atölyesi" class="splash-logo">
@@ -1442,20 +1372,15 @@
 
 
 <script>
-  // ============ SPLASH FLOW: Mum → Video → Stage 2 ============
+  // ============ SPLASH FLOW: Otomatik Video → Stage 2 ============
 
-  // Mum'a tıklayınca video başlar
-  function startStory() {
-    // Müzik için "user gesture" hazırla (Chrome autoplay policy)
-    sessionStorage.setItem('autoplay-music', '1');
-    
-    // Aşama 1 (mum) kaybolsun
-    const stage1 = document.getElementById('splashStage1');
-    if (stage1) stage1.classList.add('hide');
-    
-    // Video başlat
-    openVideo();
-  }
+  // Sayfa yüklenir yüklenmez video başlat (otomatik)
+  window.addEventListener('DOMContentLoaded', () => {
+    // Hafif gecikme: render bitsin, sonra video aç
+    setTimeout(() => {
+      openVideo();
+    }, 400);
+  });
 
   // "Atölyeye Gir" → atolye.html'e git
   function enterAtolye() {
@@ -1497,9 +1422,12 @@
     video.addEventListener('loadeddata', () => {
       video.style.display = 'block';
       placeholder.style.display = 'none';
+      // Browser autoplay politikası: ses ile autoplay engellenir, sessiz başlat
+      video.muted = true;
       const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
+          // Hâlâ engellendiyse, kontroller göster
           video.controls = true;
         });
       }
