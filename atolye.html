@@ -473,10 +473,10 @@
     text-align: center;
   }
 
-  /* Hero logo container - watercolor logo */
+  /* Hero logo container - watercolor logo (büyütüldü +50%) */
   .hero-logo {
-    width: 240px; height: 240px;
-    margin-bottom: 20px;
+    width: 360px; height: 360px;
+    margin-bottom: 8px;
     position: relative;
     opacity: 0;
     transform: scale(0.92);
@@ -488,6 +488,20 @@
     user-select: none;
     -webkit-user-drag: none;
     object-fit: contain;
+  }
+  .hero-credit {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: rgba(61, 47, 34, 0.6);
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 2.2s forwards;
+  }
+  .hero-credit em {
+    color: var(--gold);
+    font-weight: 400;
   }
   .animate-in .hero-logo {
     opacity: 1;
@@ -1302,7 +1316,8 @@
     .nav-links { gap: 14px; font-size: 9px; }
     .nav-brand { font-size: 22px; }
     .hero { padding: 70px 20px 40px; }
-    .hero-logo { width: 180px; height: 180px; margin-bottom: 16px; }
+    .hero-logo { width: 260px; height: 260px; margin-bottom: 6px; }
+    .hero-credit { font-size: 12px; margin-bottom: 18px; }
     .hero-title { font-size: 38px; }
     .hero-sub { font-size: 14px; }
     .hero-nav-buttons { flex-direction: column; gap: 10px; width: 100%; max-width: 280px; }
@@ -1408,6 +1423,8 @@
     <img src="logo.png" alt="Mum Işığı Atölyesi" class="hero-logo-img">
   </div>
 
+  <p class="hero-credit">by <em>Merve Aslan</em></p>
+
   <div class="hero-eyebrow">— Hoşgeldiniz —</div>
 
   <h1 class="hero-title">
@@ -1457,16 +1474,6 @@
       Bir mumu yakmak, sadece bir odayı aydınlatmak değil; bir anıyı canlandırmaktır.
     </p>
     <a href="hikaye.html" class="story-link">Hikayemizi Oku →</a>
-  </div>
-</section>
-
-<!-- ============ ATMOSPHERIC HERO IMAGE ============ -->
-<section class="atmospheric reveal">
-  <img src="gul-buketi-1.jpg" alt="El yapımı gül buketi mum koleksiyonu" class="atmospheric-img">
-  <div class="atmospheric-overlay">
-    <p class="atmospheric-quote">
-      <em>"Bir mumu yakmak,<br/>sadece bir odayı aydınlatmak değil;<br/>bir anıyı canlandırmaktır."</em>
-    </p>
   </div>
 </section>
 

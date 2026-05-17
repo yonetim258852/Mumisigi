@@ -250,7 +250,7 @@
     font-size: 42px;
     line-height: 1.3;
     max-width: 800px;
-    margin-bottom: 50px;
+    margin-bottom: 80px;
     letter-spacing: -0.5px;
     position: relative;
     z-index: 2;
@@ -337,13 +337,15 @@
   .video-modal {
     position: fixed;
     inset: 0;
-    background: #000;
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(12px);
     z-index: 10000;
     display: none;
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: opacity 0.8s ease;
+    transition: opacity 0.6s ease;
+    padding: 24px;
   }
   .video-modal.show {
     display: flex;
@@ -352,12 +354,24 @@
   .video-modal.fading-out {
     opacity: 0;
   }
+  .video-modal-box {
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    transform: scale(0.95);
+    transition: transform 0.6s ease;
+  }
+  .video-modal.show .video-modal-box {
+    transform: scale(1);
+  }
   .video-modal-inner {
     position: relative;
     width: 100%;
-    height: 100vh;
+    aspect-ratio: 16 / 9;
     background: #000;
     overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.6), 0 0 100px rgba(232, 164, 71, 0.15);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -365,8 +379,9 @@
   .video-modal video {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     background: #000;
+    display: block;
   }
   .video-placeholder {
     position: absolute;
@@ -402,14 +417,14 @@
   }
   .video-close {
     position: absolute;
-    top: 24px; right: 24px;
+    top: -50px; right: 0;
     background: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(250, 246, 238, 0.3);
     color: #faf6ee;
-    width: 44px; height: 44px;
+    width: 40px; height: 40px;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 18px;
     transition: all 0.3s;
     z-index: 100;
     backdrop-filter: blur(10px);
@@ -427,11 +442,13 @@
     .splash-logo { width: 220px; height: 220px; margin-bottom: 20px; }
     .splash-credit { font-size: 12px; margin-bottom: 18px; }
     .splash-title { font-size: 16px; letter-spacing: 3px; margin-bottom: 30px; }
-    .splash-quote { font-size: 28px; margin-bottom: 40px; }
-    .splash-buttons { flex-direction: column; width: 100%; max-width: 280px; }
-    .splash-btn { width: 100%; justify-content: center; }
-    .video-modal { padding: 0; }
-    .video-close { top: 16px; right: 16px; }
+    .splash-quote { font-size: 28px; margin-bottom: 60px; }
+    .splash-buttons { flex-direction: row; flex-wrap: nowrap; gap: 10px; width: 100%; max-width: 380px; }
+    .splash-btn { padding: 14px 18px; font-size: 9px; letter-spacing: 2px; flex: 1; justify-content: center; white-space: nowrap; }
+    .video-modal { padding: 16px; }
+    .video-modal-box { max-width: 100%; }
+    .video-modal-inner { border-radius: 8px; }
+    .video-close { top: -44px; right: 0; width: 36px; height: 36px; font-size: 16px; }
   }
 
   /* ============ CINEMATIC TRANSITION ============
@@ -1336,26 +1353,27 @@
 
 <!-- ============ VIDEO MODAL ============ -->
 <div class="video-modal" id="videoModal">
-  <div class="video-modal-inner">
+  <div class="video-modal-box">
     <button class="video-close" onclick="closeVideo()">×</button>
+    <div class="video-modal-inner">
+      <!-- Cinematic video player -->
+      <video id="introVideo" playsinline preload="auto" style="display:none;">
+        <source src="intro-video.mp4" type="video/mp4">
+      </video>
 
-    <!-- Cinematic video player. Video bitince logo'da dondurur, sonra cinematic bridge'e geçer -->
-    <video id="introVideo" playsinline preload="auto" style="display:none;">
-      <source src="intro-video.mp4" type="video/mp4">
-    </video>
-
-    <!-- Video yoksa görünecek placeholder -->
-    <div class="video-placeholder" id="videoPlaceholder">
-      <svg class="video-placeholder-flame" viewBox="0 0 60 90">
-        <ellipse cx="30" cy="40" rx="22" ry="35" fill="#e8a447" opacity="0.4"/>
-        <path d="M 30 8 Q 15 35 15 65 Q 15 80 30 80 Q 45 80 45 65 Q 45 35 30 8 Z" fill="#f0c674"/>
-        <path d="M 30 25 Q 22 45 22 65 Q 22 75 30 75 Q 38 75 38 65 Q 38 45 30 25 Z" fill="#fde8b3"/>
-      </svg>
-      <p class="video-placeholder-text">
-        Hikayemiz yakında <em style="color:#e8a447;">burada.</em><br/>
-        Atölyeden ilk video çekilince paylaşacağız.
-      </p>
-      <p class="video-placeholder-sub">— Çok yakında —</p>
+      <!-- Video yoksa görünecek placeholder -->
+      <div class="video-placeholder" id="videoPlaceholder">
+        <svg class="video-placeholder-flame" viewBox="0 0 60 90">
+          <ellipse cx="30" cy="40" rx="22" ry="35" fill="#e8a447" opacity="0.4"/>
+          <path d="M 30 8 Q 15 35 15 65 Q 15 80 30 80 Q 45 80 45 65 Q 45 35 30 8 Z" fill="#f0c674"/>
+          <path d="M 30 25 Q 22 45 22 65 Q 22 75 30 75 Q 38 75 38 65 Q 38 45 30 25 Z" fill="#fde8b3"/>
+        </svg>
+        <p class="video-placeholder-text">
+          Hikayemiz yakında <em style="color:#e8a447;">burada.</em><br/>
+          Atölyeden ilk video çekilince paylaşacağız.
+        </p>
+        <p class="video-placeholder-sub">— Çok yakında —</p>
+      </div>
     </div>
   </div>
 </div>
