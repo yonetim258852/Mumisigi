@@ -1,0 +1,116 @@
+/* ============================================================
+ * Mum Işığı Atölyesi — Kraft Kağıt Bant Sistemi
+ * Tek dosya: ihtiyaç duyulan sayfaya tek satır ile eklenir:
+ *   <link rel="stylesheet" href="washi-tape.css">
+ *
+ * • Atölye Günlüğü (gunluk.html): polaroidlerin üst köşelerine
+ *   2 kraft bant OTOMATİK gelir, mevcut iğne (pol-pin) kaldırılır.
+ * • Diğer sayfalar (hikaye, ürün vs.): herhangi bir resim
+ *   container'ına `.taped` class'ı ekleyince 4 köşe bant gelir.
+ *
+ * HTML kullanım örneği (.taped):
+ *   <div class="taped">
+ *     <img src="foto.jpg" alt="...">
+ *     <span class="tape-bl"></span>
+ *     <span class="tape-br"></span>
+ *   </div>
+ *   (üst 2 bant otomatik; alt 2 bant için yukarıdaki span'ler)
+ * ============================================================ */
+
+/* --- Polaroid sayfası: mevcut iğneyi gizle (bant onun yerine) --- */
+.polaroid .pol-pin { display: none !important; }
+
+/* --- Polaroid ve .taped: bantların dışarı taşabilmesi için --- */
+.polaroid,
+.taped {
+  /* polaroid zaten position:relative; bu defensive */
+  position: relative;
+}
+/* pol-img iç içerik (mum SVG) için overflow korunsun */
+/* artık bantlar pol-img'e değil polaroid container'a bağlı */
+
+/* --- Bantların ortak stili: kraft kağıt görünümü --- */
+.polaroid::before,
+.polaroid::after,
+.taped::before,
+.taped::after,
+.taped > .tape-bl,
+.taped > .tape-br {
+  content: '';
+  position: absolute;
+  width: 70px;
+  height: 22px;
+  pointer-events: none;
+  z-index: 3;
+  /* iki katmanlı arka plan: yatay kağıt lif çizgileri + sıcak bej gradyan */
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(184, 148, 90, 0.05) 0px,
+      rgba(184, 148, 90, 0.05) 2px,
+      transparent 2px,
+      transparent 4px
+    ),
+    linear-gradient(
+      rgba(202, 172, 130, 0.78),
+      rgba(184, 148, 90, 0.72)
+    );
+  box-shadow:
+    0 2px 4px rgba(61, 47, 34, 0.22),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.15);
+  border-radius: 1px;
+  /* hafif blur kağıt yumuşaklığı için */
+  filter: blur(0.15px);
+}
+
+/* --- Üst köşe pozisyonları (otomatik) --- */
+.polaroid::before,
+.taped::before {
+  top: -10px;
+  left: -16px;
+  transform: rotate(-42deg);
+}
+.polaroid::after,
+.taped::after {
+  top: -10px;
+  right: -16px;
+  transform: rotate(42deg);
+}
+
+/* --- Alt köşe pozisyonları (yalnızca .taped'de manuel span'lerle) --- */
+.taped > .tape-bl {
+  bottom: -10px;
+  left: -16px;
+  transform: rotate(42deg);
+}
+.taped > .tape-br {
+  bottom: -10px;
+  right: -16px;
+  transform: rotate(-42deg);
+}
+
+/* --- Hover'da bantlar yerinde kalsın, sadece resim hafif kalksın --- */
+.taped img,
+.taped > picture > img {
+  transition: transform 0.4s ease;
+}
+.taped:hover img { transform: scale(1.02); }
+
+/* --- Mobil: bantları biraz küçült --- */
+@media (max-width: 600px) {
+  .polaroid::before,
+  .polaroid::after,
+  .taped::before,
+  .taped::after,
+  .taped > .tape-bl,
+  .taped > .tape-br {
+    width: 56px;
+    height: 18px;
+  }
+  .polaroid::before,
+  .taped::before { top: -8px; left: -12px; }
+  .polaroid::after,
+  .taped::after { top: -8px; right: -12px; }
+  .taped > .tape-bl { bottom: -8px; left: -12px; }
+  .taped > .tape-br { bottom: -8px; right: -12px; }
+}

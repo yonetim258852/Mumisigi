@@ -1,0 +1,40 @@
+MUM IŞIĞI ATÖLYESİ — Güncelleme Paketi
+========================================
+
+İÇİNDEKİLER (18 dosya):
+
+  Yeni dosyalar (3):
+  • theme-candle.js  — Nav'a mum animasyonu + dark/light tema toggle
+  • washi-tape.css   — Atölye günlüğü polaroidleri için kraft bant
+  • logo-seffaf.png  — Şeffaflığı düzeltilmiş splash logosu
+
+  Güncellenmiş HTML'ler (15):
+  • index.html, atolye.html, koleksiyon.html, hikaye.html
+  • gunluk.html (washi-tape.css linki de var)
+  • iletisim.html
+  • urun-akdeniz.html, urun-gece.html, urun-karsilasma.html,
+    urun-mart-sabahi.html, urun-model5.html, urun-pembe-bahar.html,
+    urun-pembe-pasta.html, urun-sabah-ciyi.html, urun-sis.html
+
+YÜKLEME (en kolay yol):
+
+  1. https://github.com/yonetim258852/Mumisigi adresine git
+  2. "Add file" → "Upload files"
+  3. ZIP'ten çıkan TÜM dosyaları (18 tane) topluca seç ve sürükle
+  4. Var olanların üzerine yazacak — ONAYLA, doğru olan bu
+  5. Commit mesajı yaz: "Mum animasyonu, dark/light tema, polaroid bantları, logo şeffaflık fix"
+  6. "Commit changes"
+
+3-5 dakikada GitHub Pages yenilenir, hard refresh (Ctrl+Shift+R) yap.
+
+KONTROL LİSTESİ (yükleme sonrası test):
+
+  [ ] Splash'te logoda siyah kare kayboldu mu?
+  [ ] Tüm sayfalarda nav'da "Mum Işığı" yazısının yanında mum çıktı mı?
+  [ ] Nav'da sağ üstte hilal toggle butonu var mı?
+  [ ] Toggle'a basınca mum sönüp dark tema aktif olunca mum söndü mü?
+  [ ] Tema tercihi sayfalar arasında hatırlanıyor mu?
+  [ ] Atölye Günlüğü'nde polaroidlerin köşelerinde kraft bantlar var mı?
+  [ ] Polaroidlerin pinleri (iğne) kalktı mı?
+
+Bir sorun olursa hata mesajını veya screenshot'u paylaş.
